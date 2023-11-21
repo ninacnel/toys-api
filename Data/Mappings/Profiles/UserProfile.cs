@@ -13,6 +13,8 @@ namespace Data.Mappings.Profiles
     {
         public UserProfile()
         {
+            CreateMap<users, UserDTO>();
+
             CreateMap<List<users>, List<UserDTO>>()
                 .ConvertUsing(src => src.Select(u => new UserDTO
                 {

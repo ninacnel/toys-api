@@ -11,6 +11,7 @@ namespace Services.IServices
     public interface IUserService
     {
         List<UserDTO> GetUsers();
+        UserDTO GetUserById(int id);
         UserDTO AddUser(UserViewModel user);
         void DeleteUser(int id);
         void RecoverUser(int id);

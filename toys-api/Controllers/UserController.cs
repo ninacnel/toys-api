@@ -38,6 +38,25 @@ namespace api.Controllers
             }
         }
 
+        [HttpGet("getuserbyid")]
+        public ActionResult<UserDTO> GetUserById(int id)
+        {
+            try
+            {
+                var response = _service.GetUserById(id);
+                if(response == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en UserController, metodo GetUserById: {exe.Message}");
+                return BadRequest(exe.Message );
+            }
+        }
+
         [HttpPost]
         public ActionResult<UserDTO> AddUser([FromBody] UserViewModel user)
         {

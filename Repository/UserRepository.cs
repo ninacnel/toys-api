@@ -29,6 +29,13 @@ namespace Repository
             return response;
         }
 
+        public UserDTO GetUserById(int id)
+        {
+            var user = _context.users.SingleOrDefault(u => u.user_id == id);
+            var response = _mapper.Map<UserDTO>(user);
+            return response;
+        }
+
         public UserDTO AddUser(UserViewModel user)
         {
             UserDTO newUser = new UserDTO();

@@ -24,6 +24,11 @@ namespace Services.Services
             return _repository.GetUsers();
         }
 
+        public UserDTO GetUserById(int id)
+        {
+            return _repository.GetUserById(id);
+        }
+
         public UserDTO AddUser(UserViewModel user)
         {
             return _repository.AddUser(user);
