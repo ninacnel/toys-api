@@ -1,0 +1,65 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "toystoreContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Data",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[categories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[order_line]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[orders]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[price_history]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[roles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[toys]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[users]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "desktop-p9kcjif.toystore.dbo",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}
