@@ -60,6 +60,29 @@ namespace Repository
             return newUser;
         }
 
+        public UserDTO UpdateUser(UserViewModel user)
+        {
+            users userDB = _context.users.Single(f => f.user_id == user.user_id);
+            UserDTO newUser = new UserDTO();
+
+
+            userDB.name = user.name;
+            userDB.email = user.email;
+            userDB.password = user.password;
+            userDB.role_id = user.role_id;
+            userDB.state = user.state;
+            
+            _context.SaveChanges();
+
+            newUser.name = user.name;
+            newUser.email = user.email;
+            newUser.password = user.password;
+            newUser.role_id = user.role_id;
+            newUser.state = user.state;
+            
+            return newUser;
+        }
+
         public void DeleteUser(int id)
         {
             //_context.users.Remove(_context.users.Single(u => u.user_id == id));

@@ -13,6 +13,7 @@ namespace Services.IServices
         List<UserDTO> GetUsers();
         UserDTO GetUserById(int id);
         UserDTO AddUser(UserViewModel user);
+        UserDTO UpdateUser(UserViewModel user);
         void DeleteUser(int id);
         void RecoverUser(int id);
     }

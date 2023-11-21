@@ -34,6 +34,11 @@ namespace Services.Services
             return _repository.AddUser(user);
         }
 
+        public UserDTO UpdateUser(UserViewModel user)
+        {
+            return _repository.UpdateUser(user);
+        }
+
         public void DeleteUser(int id)
         {
             _repository.DeleteUser(id);

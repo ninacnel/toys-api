@@ -76,6 +76,25 @@ namespace api.Controllers
             }
         }
 
+        [HttpPut]
+        public ActionResult<UserDTO> UpdateUser(UserViewModel user)
+        {
+            try
+            {
+                var response = _service.UpdateUser(user);
+                if (response == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en UserController, metodo UpdateUser: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
         [HttpDelete]
         public ActionResult<UserDTO> DeleteUser(int id)
         {
