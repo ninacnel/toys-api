@@ -13,7 +13,7 @@ namespace Data.Models.Configurations
         public void Configure(EntityTypeBuilder<roles> entity)
         {
             entity.HasKey(e => e.role_id)
-                .HasName("PK__roles__760965CC4F555ADC");
+                .HasName("PK__roles__760965CC1A7C5785");
 
             entity.Property(e => e.role_name)
                 .IsRequired()

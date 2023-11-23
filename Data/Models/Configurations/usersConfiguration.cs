@@ -13,7 +13,7 @@ namespace Data.Models.Configurations
         public void Configure(EntityTypeBuilder<users> entity)
         {
             entity.HasKey(e => e.user_id)
-                .HasName("PK__users__B9BE370F4B4172C8");
+                .HasName("PK__users__B9BE370FA41DA192");
 
             entity.Property(e => e.email)
                 .IsRequired()

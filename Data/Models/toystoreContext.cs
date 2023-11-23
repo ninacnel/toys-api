@@ -22,7 +22,6 @@ namespace Data.Models
         public virtual DbSet<categories> categories { get; set; }
         public virtual DbSet<order_line> order_line { get; set; }
         public virtual DbSet<orders> orders { get; set; }
-        public virtual DbSet<price_history> price_history { get; set; }
         public virtual DbSet<roles> roles { get; set; }
         public virtual DbSet<toys> toys { get; set; }
         public virtual DbSet<users> users { get; set; }
@@ -32,7 +31,6 @@ namespace Data.Models
             modelBuilder.ApplyConfiguration(new Configurations.categoriesConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.order_lineConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ordersConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.price_historyConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.rolesConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.toysConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.usersConfiguration());

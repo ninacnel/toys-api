@@ -13,14 +13,20 @@ namespace Data.Models.Configurations
         public void Configure(EntityTypeBuilder<toys> entity)
         {
             entity.HasKey(e => e.code)
-                .HasName("PK__toys__357D4CF8DA8F0ABA");
+                .HasName("PK__toys__357D4CF8915F34E6");
 
             entity.Property(e => e.code).ValueGeneratedNever();
+
+            entity.Property(e => e.description)
+                .HasMaxLength(200)
+                .IsUnicode(false);
 
             entity.Property(e => e.name)
                 .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false);
+
+            entity.Property(e => e.price).HasColumnType("decimal(10, 2)");
 
             entity.HasOne(d => d.category)
                 .WithMany(p => p.toys)

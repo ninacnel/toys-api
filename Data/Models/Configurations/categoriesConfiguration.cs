@@ -13,7 +13,7 @@ namespace Data.Models.Configurations
         public void Configure(EntityTypeBuilder<categories> entity)
         {
             entity.HasKey(e => e.category_code)
-                .HasName("PK__categori__BC9D1E7D454E3612");
+                .HasName("PK__categori__BC9D1E7D5F23E712");
 
             entity.Property(e => e.category_name)
                 .IsRequired()

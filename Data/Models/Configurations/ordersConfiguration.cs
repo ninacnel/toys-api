@@ -13,7 +13,7 @@ namespace Data.Models.Configurations
         public void Configure(EntityTypeBuilder<orders> entity)
         {
             entity.HasKey(e => e.order_id)
-                .HasName("PK__orders__465962294F73E9E4");
+                .HasName("PK__orders__46596229326860CD");
 
             entity.Property(e => e.order_date)
                 .HasColumnType("datetime")
@@ -24,7 +24,7 @@ namespace Data.Models.Configurations
             entity.HasOne(d => d.client)
                 .WithMany(p => p.orders)
                 .HasForeignKey(d => d.client_id)
-                .HasConstraintName("FK__orders__client_i__44FF419A");
+                .HasConstraintName("FK__orders__client_i__412EB0B6");
 
             OnConfigurePartial(entity);
         }
