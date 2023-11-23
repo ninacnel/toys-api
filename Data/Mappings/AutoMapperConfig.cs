@@ -14,6 +14,7 @@ namespace Data.Mappings
         {
             var mapperConfiguration = new MapperConfiguration(cfg => {
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<ToyProfile>();
             });
             IMapper mapper = mapperConfiguration.CreateMapper();
             return mapper;
