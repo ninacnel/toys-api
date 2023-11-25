@@ -44,6 +44,11 @@ namespace Services.Services
             _repository.DeleteUser(id);
         }
 
+        public void SoftDeleteUser(int id)
+        {
+            _repository.SoftDeleteUser(id);
+        }
+
         public void RecoverUser(int id)
         {
             _repository.RecoverUser(id);

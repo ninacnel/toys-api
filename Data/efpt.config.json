@@ -27,6 +27,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[price_history]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[roles]",
          "ObjectType": 0
       },

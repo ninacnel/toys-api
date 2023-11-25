@@ -10,6 +10,8 @@ namespace api
         {
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<IToyService, ToyService>();
+            builder.Services.AddScoped<ToyRepository>();
         }
     }
 }
