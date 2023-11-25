@@ -111,7 +111,23 @@ namespace api.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPatch("/soft-delete-user")]
+        public ActionResult<UserDTO> SoftDeleteUser(int id)
+        {
+            try
+            {
+                _service.SoftDeleteUser(id);
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en UserController, metodo SoftDeleteUser: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPatch("/recover-user")]
         public ActionResult<UserDTO> RecoverUser(int id)
         {
             try

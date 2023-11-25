@@ -85,8 +85,11 @@ namespace Repository
 
         public void DeleteUser(int id)
         {
-            //_context.users.Remove(_context.users.Single(u => u.user_id == id));
-            //For now, we just delete ir logically
+            _context.users.Remove(_context.users.Single(u => u.user_id == id));
+            _context.SaveChanges();
+        }
+        public void SoftDeleteUser(int id)
+        {
             users user = _context.users.Single(u => u.user_id == id);
             if (user.state == true)
             {

@@ -10,6 +10,7 @@ namespace Data.Models
         public toys()
         {
             order_line = new HashSet<order_line>();
+            price_history = new HashSet<price_history>();
         }
 
         public int code { get; set; }
@@ -25,5 +26,6 @@ namespace Data.Models
 
         public virtual categories category { get; set; }
         public virtual ICollection<order_line> order_line { get; set; }
+        public virtual ICollection<price_history> price_history { get; set; }
     }
 }
