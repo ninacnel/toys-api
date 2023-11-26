@@ -31,27 +31,22 @@ namespace Repository
         }
         public ToyDTO GetToyById(int id)
         {
-            var toy =_context.toys.SingleOrDefault(t => t.code == id);
-            var response = _mapper.Map<ToyDTO>(toy);
-            return response;
-        }
-        public ToyDTO GetToyPricesById(int id)
-        {
             var toyWithPrices = _context.toys
                 .Where(t => t.code == id)
                 .Include(t => t.price_history)
                 .FirstOrDefault();
 
-                var toyDTO = _mapper.Map<ToyDTO>(toyWithPrices);
+            var toyDTO = _mapper.Map<ToyDTO>(toyWithPrices);
 
-                // Convert the HashSet<price_history> to List<price_history>
-                var priceHistoryList = toyWithPrices.price_history.ToList();
+            // Convert the HashSet<price_history> to List<price_history>
+            var priceHistoryList = toyWithPrices.price_history.ToList();
 
-                // Map the price history to a list of PriceDTO
-                toyDTO.PriceHistory = _mapper.Map<List<PriceDTO>>(priceHistoryList);
+            // Map the price history to a list of PriceDTO
+            toyDTO.PriceHistory = _mapper.Map<List<PriceDTO>>(priceHistoryList);
 
-                return toyDTO;
+            return toyDTO;
         }
+
         public ToyDTO AddToy(ToyViewModel toy)
         {
             ToyDTO newToy = new ToyDTO();
@@ -64,7 +59,7 @@ namespace Repository
                 description = toy.description,
                 stock = toy.stock,
                 stock_threshold = toy.stock_threshold,
-                state = toy.state,
+                state = true,
                 price = toy.price,
             });
 
@@ -74,11 +69,36 @@ namespace Repository
             newToy.name = toy.name;
             newToy.category_id = toy.category_id;
             newToy.description = toy.description;
-            newToy.state = toy.state;
+            newToy.state = true;
             newToy.stock = toy.stock;
             newToy.stock_threshold = toy.stock_threshold;
             newToy.price = toy.price;
 
+            return newToy;
+        }
+
+        public ToyDTO UpdateToy(ToyViewModel toy)
+        {
+            toys toyDB = _context.toys.Single(t => t.code == toy.code);
+            ToyDTO newToy = new ToyDTO();
+
+            toyDB.name = toy.name;
+            toyDB.description = toy.description;
+            toyDB.stock = toy.stock;
+            toyDB.stock_threshold = toy.stock_threshold;
+            toyDB.price = toy.price;
+            toyDB.category_id = toy.category_id;
+
+            _context.SaveChanges();
+
+            newToy.name = toy.name;
+            newToy.description = toy.description;
+            newToy.stock = toy.stock;
+            newToy.stock_threshold = toy.stock_threshold;
+            newToy.price = toy.price;
+            newToy.category_id = toy.category_id;
+
+            //as we're adding a new price we should update the price_history, with a transaction or trigger
             return newToy;
         }
 

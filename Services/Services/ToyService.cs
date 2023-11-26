@@ -26,15 +26,14 @@ namespace Services.Services
         {
             return _repository.GetToyById(id);
         }
-        public ToyDTO GetToyPricesById(int id)
-        {
-            return _repository.GetToyPricesById(id);
-        }
         public ToyDTO AddToy(ToyViewModel toy)
         {
             return _repository.AddToy(toy);
         }
-
+        public ToyDTO UpdateToy(ToyViewModel toy)
+        {
+            return _repository.UpdateToy(toy);
+        }
         public ToyDTO ChangePrice(int id, int newPrice)
         {
             return _repository.ChangePrice(id, newPrice);
