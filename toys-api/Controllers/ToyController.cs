@@ -59,26 +59,6 @@ namespace api.Controllers
             }
         }
 
-        [HttpGet("/get-toy-prices-by-id")]
-        public ActionResult<ToyDTO> GetToyPricesById(int id)
-        {
-            try
-            {
-                var response = _service.GetToyPricesById(id);
-                if (response == null)
-                {
-                    return BadRequest(response);
-                }
-
-                return Ok(response);
-            }
-            catch (Exception exe)
-            {
-                _logger.LogError($"Error en ToyController, metodo GetToys: {exe.Message}");
-                return BadRequest(exe.Message);
-            }
-        }
-
         [HttpPost]
         public ActionResult<ToyDTO> AddToy([FromBody] ToyViewModel toy)
         {
@@ -95,6 +75,25 @@ namespace api.Controllers
             catch (Exception exe)
             {
                 _logger.LogError($"Error en ToyController, metodo AddToy: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPut]
+        public ActionResult<ToyDTO> UpdateToy(ToyViewModel toy)
+        {
+            try
+            {
+                var response = _service.UpdateToy(toy);
+                if (response == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en ToyController, metodo UpdateToy: {exe.Message}");
                 return BadRequest(exe.Message);
             }
         }

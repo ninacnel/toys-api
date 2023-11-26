@@ -12,8 +12,8 @@ namespace Services.IServices
     {
         List<ToyDTO> GetToys();
         ToyDTO GetToyById(int id);
-        ToyDTO GetToyPricesById(int id);
         ToyDTO AddToy(ToyViewModel toy);
+        ToyDTO UpdateToy(ToyViewModel toy);
         ToyDTO ChangePrice(int id, int newPrice);
         void DeleteToy(int id);
         void SoftDeleteToy(int id);
