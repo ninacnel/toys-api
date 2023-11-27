@@ -46,7 +46,6 @@ namespace Repository
                 email = user.email,
                 password = user.password,
                 role_id = user.role_id,
-                state = user.state,
             });
 
             _context.SaveChanges();
@@ -55,7 +54,6 @@ namespace Repository
             newUser.email = user.email;
             newUser.password = user.password;
             newUser.role_id = user.role_id;
-            newUser.state = user.state;
 
             return newUser;
         }
@@ -70,7 +68,6 @@ namespace Repository
             userDB.email = user.email;
             userDB.password = user.password;
             userDB.role_id = user.role_id;
-            userDB.state = user.state;
             
             _context.SaveChanges();
 
@@ -78,7 +75,6 @@ namespace Repository
             newUser.email = user.email;
             newUser.password = user.password;
             newUser.role_id = user.role_id;
-            newUser.state = user.state;
             
             return newUser;
         }

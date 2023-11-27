@@ -15,7 +15,7 @@ namespace Services.IServices
         CategoryDTO AddCategory(CategoryViewModel category);
         CategoryDTO UpdateCategory(CategoryViewModel category);
         void DeleteCategory(int id);
-        //void SoftDeleteCategory(int id);
-        //void RecoverCategory(int id);
+        void SoftDeleteCategory(int id);
+        void RecoverCategory(int id);
     }
 }

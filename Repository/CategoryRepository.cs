@@ -68,23 +68,23 @@ namespace Repository
             _context.SaveChanges();
         }
 
-        //public void SoftDeleteCategory(int id)
-        //{
-        //    categories category = _context.categories.Single(c => c.category_code == id);
-        //    if (category.state == true)
-        //    {
-        //        category.state = false;
-        //    }
-        //    _context.SaveChanges();
-        //}
-        //public void RecoverCategory(int id)
-        //{
-        //    categories category = _context.categories.Single(c => c.category_code == id);
-        //    if (category.state == false)
-        //    {
-        //        category.state = true;
-        //    }
-        //    _context.SaveChanges();
-        //}
+        public void SoftDeleteCategory(int id)
+        {
+            categories category = _context.categories.Single(c => c.category_code == id);
+            if (category.state == true)
+            {
+                category.state = false;
+            }
+            _context.SaveChanges();
+        }
+        public void RecoverCategory(int id)
+        {
+            categories category = _context.categories.Single(c => c.category_code == id);
+            if (category.state == false)
+            {
+                category.state = true;
+            }
+            _context.SaveChanges();
+        }
     }
 }

@@ -31,17 +31,17 @@ namespace Services.Services
         {
             return _repository.UpdateCategory(category);
         }
-        void DeleteCategory(int id)
+        public void DeleteCategory(int id)
         {
             _repository.DeleteCategory(id);
         }
-        //void SoftDeleteCategory(int id)
-        //{
-        //    _repository.SoftDeleteCategory(id);
-        //}
-        //void RecoverCategory(int id)
-        //{
-        //    _repository.RecoverCategory(id);
-        //}
+        public void SoftDeleteCategory(int id)
+        {
+            _repository.SoftDeleteCategory(id);
+        }
+        public void RecoverCategory(int id)
+        {
+            _repository.RecoverCategory(id);
+        }
     }
 }
