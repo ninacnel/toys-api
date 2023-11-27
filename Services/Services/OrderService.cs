@@ -33,5 +33,15 @@ namespace Services.Services
         {
             return _repository.AddOrder(order);
         }
+
+        public OrderDTO UpdateOrder(OrderViewModel order)
+        {
+            return _repository.UpdateOrder(order);
+        }
+
+        public OrderDTO ModifyProductCode(/*int id, */OrderLineViewModel orderLine)
+        {
+            return _repository.ModifyProductCode(orderLine);
+        }
     }
 }

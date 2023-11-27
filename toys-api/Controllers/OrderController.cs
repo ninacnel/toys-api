@@ -76,5 +76,45 @@ namespace toys_api.Controllers
                 return BadRequest(exe.Message);
             }
         }
+
+        [HttpPut]
+        public ActionResult<OrderDTO> UpdateOrder(OrderViewModel order)
+        {
+            try
+            {
+                var response = _service.UpdateOrder(order);
+                if (response == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en OrderController, metodo UpdateOrder: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPatch]
+        public ActionResult<OrderDTO> ModifyProductCode(/*int id, */OrderLineViewModel orderLine)
+        {
+            try
+            {
+                var response = _service.ModifyProductCode(orderLine);
+                if (response == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en OrderController, metodo ModifyProductCode: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
     }
 }

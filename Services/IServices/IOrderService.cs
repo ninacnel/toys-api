@@ -13,5 +13,7 @@ namespace Services.IServices
         List<OrderDTO> GetOrders();
         OrderDTO GetOrderById(int id);
         OrderDTO AddOrder(OrderViewModel order);
+        OrderDTO UpdateOrder(OrderViewModel order);
+        OrderDTO ModifyProductCode(/*int id, */OrderLineViewModel orderLine);
     }
 }
