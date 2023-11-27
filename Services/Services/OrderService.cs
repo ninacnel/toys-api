@@ -24,6 +24,11 @@ namespace Services.Services
             return _repository.GetOrders();
         }
 
+        public OrderDTO GetOrderById(int id)
+        {
+            return _repository.GetOrderById(id);
+        }
+
         public OrderDTO AddOrder(OrderViewModel order)
         {
             return _repository.AddOrder(order);

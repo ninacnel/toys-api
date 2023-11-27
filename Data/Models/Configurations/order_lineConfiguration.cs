@@ -12,8 +12,8 @@ namespace Data.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<order_line> entity)
         {
-            entity.HasKey(e => e.order_line_id)
-                .HasName("PK__order_li__8F2B951F1C55BF83");
+            entity.HasKey(e => new { e.order_id, e.order_line_id })
+                .HasName("PK__order_li__AEABDB7834B1C326");
 
             entity.Property(e => e.price).HasColumnType("decimal(10, 2)");
 
@@ -22,12 +22,13 @@ namespace Data.Models.Configurations
             entity.HasOne(d => d.order)
                 .WithMany(p => p.order_line)
                 .HasForeignKey(d => d.order_id)
-                .HasConstraintName("FK__order_lin__order__44FF419A");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__order_lin__order__6477ECF3");
 
             entity.HasOne(d => d.toy_codeNavigation)
                 .WithMany(p => p.order_line)
                 .HasForeignKey(d => d.toy_code)
-                .HasConstraintName("FK__order_lin__toy_c__45F365D3");
+                .HasConstraintName("FK__order_lin__toy_c__656C112C");
 
             OnConfigurePartial(entity);
         }

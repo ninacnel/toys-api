@@ -10,6 +10,7 @@ namespace Data.Mappings.Profiles
         public OrderProfile() 
         {
             CreateMap<orders, OrderDTO>();
+                //.ForMember(dest => dest.order_date, opt => opt.MapFrom(src => (DateTime?)src.order_date));
 
             CreateMap<order_line, OrderLineDTO>();
 

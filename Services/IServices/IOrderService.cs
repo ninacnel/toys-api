@@ -11,6 +11,7 @@ namespace Services.IServices
     public interface IOrderService
     {
         List<OrderDTO> GetOrders();
+        OrderDTO GetOrderById(int id);
         OrderDTO AddOrder(OrderViewModel order);
     }
 }

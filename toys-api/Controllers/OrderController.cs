@@ -37,6 +37,25 @@ namespace toys_api.Controllers
                 return BadRequest(exe.Message);
             }
         }
+        [HttpGet("/get-order-by-id")]
+        public ActionResult<OrderDTO> GetOrderById(int id)
+        {
+            try
+            {
+                var response = _service.GetOrderById(id);
+                if (response == null)
+                {
+                    return NotFound("No se ha encontrado una orden con ese código.");
+                }
+
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en OrderController, metodo GetOrderById: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
 
         [HttpPost]
         public ActionResult<OrderDTO> AddOrder(OrderViewModel order)

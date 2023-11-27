@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Data.DTOs
+﻿namespace Data.DTOs
 {
     public class OrderDTO
     {
         public int order_id { get; set; }
         public int? client_id { get; set; }
         public decimal total_amount { get; set; }
-        public DateTime order_date { get; set; }
+        public DateTime? order_date { get; set; }
         public bool? state { get; set; }
         public List<OrderLineDTO> order_lines { get; set; }
     }
