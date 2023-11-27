@@ -14,6 +14,8 @@ namespace api
             builder.Services.AddScoped<ToyRepository>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<CategoryRepository>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<OrderRepository>();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Data.Models
 {
     public partial class order_line
     {
-        public int? order_id { get; set; }
+        public int order_id { get; set; }
         public int order_line_id { get; set; }
         public int? toy_code { get; set; }
         public int quantity { get; set; }
