@@ -13,6 +13,5 @@ namespace Data.ViewModels
         public string email { get; set; }
         public string password { get; set; }
         public int? role_id { get; set; }
-        public bool? state { get; set; }
     }
 }

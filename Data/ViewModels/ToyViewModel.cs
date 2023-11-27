@@ -15,7 +15,6 @@ namespace Data.ViewModels
         //public byte[] toy_img { get; set; }
         public int stock { get; set; }
         public int stock_threshold { get; set; }
-        //public bool? state { get; set; }
         public decimal price { get; set; }
         //public byte[] qr_code { get; set; }
     }

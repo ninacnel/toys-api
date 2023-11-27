@@ -114,5 +114,38 @@ namespace toys_api.Controllers
                 return BadRequest(exe.Message);
             }
         }
+
+        [HttpPatch("/soft-delete-category")]
+        public ActionResult<CategoryDTO> SoftDeleteCategory(int id)
+        {
+            try
+            {
+                _service.SoftDeleteCategory(id);
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en CategoryController, metodo SoftDeleteCategory: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPatch("/recover-category")]
+        public ActionResult<CategoryDTO> RecoverCategory(int id)
+        {
+            try
+            {
+                _service.RecoverCategory(id);
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en CategoryController, metodo RecoverCategory: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
     }
 }

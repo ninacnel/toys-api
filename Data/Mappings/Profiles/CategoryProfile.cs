@@ -15,6 +15,7 @@ namespace Data.Mappings.Profiles
                 {
                     category_code = c.category_code,
                     category_name = c.category_name,
+                    state = c.state,
                 }).ToList());
         }    
     }
