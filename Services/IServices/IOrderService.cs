@@ -14,6 +14,9 @@ namespace Services.IServices
         OrderDTO GetOrderById(int id);
         OrderDTO AddOrder(OrderViewModel order);
         OrderDTO UpdateOrder(OrderViewModel order);
-        OrderDTO ModifyProductCode(/*int id, */OrderLineViewModel orderLine);
+        OrderDTO ModifyToyCode(/*int id, */OrderLineViewModel orderLine);
+        void DeleteOrder(int id);
+        void SoftDeleteOrder(int id);
+        void RecoverOrder(int id);
     }
 }

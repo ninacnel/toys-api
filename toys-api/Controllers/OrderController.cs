@@ -98,11 +98,11 @@ namespace toys_api.Controllers
         }
 
         [HttpPatch]
-        public ActionResult<OrderDTO> ModifyProductCode(/*int id, */OrderLineViewModel orderLine)
+        public ActionResult<OrderDTO> ModifyToyCode(/*int id, */OrderLineViewModel orderLine)
         {
             try
             {
-                var response = _service.ModifyProductCode(orderLine);
+                var response = _service.ModifyToyCode(orderLine);
                 if (response == null)
                 {
                     return BadRequest();
@@ -112,7 +112,55 @@ namespace toys_api.Controllers
             }
             catch (Exception exe)
             {
-                _logger.LogError($"Error en OrderController, metodo ModifyProductCode: {exe.Message}");
+                _logger.LogError($"Error en OrderController, metodo ModifyToyCode: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpDelete]
+        public ActionResult<OrderDTO> DeleteOrder(int id)
+        {
+            try
+            {
+                _service.DeleteOrder(id);
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en OrderController, metodo DeleteOrder: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPatch("/soft-delete-order")]
+        public ActionResult<OrderDTO> SoftDeleteOrder(int id)
+        {
+            try
+            {
+                _service.SoftDeleteOrder(id);
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en OrderController, metodo SoftDeleteOrder: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPatch("/recover-order")]
+        public ActionResult<OrderDTO> RecoverOrder(int id)
+        {
+            try
+            {
+                _service.RecoverOrder(id);
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en OrderController, metodo RecoverUser: {exe.Message}");
                 return BadRequest(exe.Message);
             }
         }

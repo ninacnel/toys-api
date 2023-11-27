@@ -112,7 +112,7 @@ namespace Repository
             //if they're not mapped here and then saved in ddbb they won't be modified
         }
 
-        public OrderDTO ModifyProductCode(/*int id, */OrderLineViewModel orderLine)
+        public OrderDTO ModifyToyCode(/*int id, */OrderLineViewModel orderLine)
         {
             // Find the specific order_line based on order_id and order_line_id
             order_line orderLineDB = _context.order_line.SingleOrDefault(ol => ol.order_id == orderLine.order_id && ol.order_line_id == orderLine.order_line_id);
@@ -152,6 +152,30 @@ namespace Repository
         private List<OrderLineDTO> MapOrderLines(List<OrderLineViewModel> orderLines) 
         {
             return _mapper.Map<List<OrderLineDTO>>(orderLines);
+        }
+
+        public void DeleteOrder(int id)
+        {
+            _context.orders.Remove(_context.orders.Single(o => o.order_id == id));
+            _context.SaveChanges();
+        }
+        public void SoftDeleteOrder(int id)
+        {
+            orders order = _context.orders.Single(o => o.order_id == id);
+            if (order.state == true)
+            {
+                order.state = false;
+            }
+            _context.SaveChanges();
+        }
+        public void RecoverOrder(int id)
+        {
+            orders order = _context.orders.Single(o => o.order_id == id);
+            if (order.state == false)
+            {
+                order.state = true;
+            }
+            _context.SaveChanges();
         }
     }
 }
