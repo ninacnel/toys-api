@@ -10,7 +10,7 @@ namespace Services.IServices
 {
     public interface IAuthService
     {
-        UserDTO Authenticate(UserViewModel user);
-        string GenerateToken(UserViewModel user);
+        AuthDTO Authenticate(AuthViewModel credentials);
+        string GenerateToken(AuthDTO user);
     }
 }

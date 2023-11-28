@@ -25,15 +25,15 @@ namespace toys_api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> Login(UserViewModel user)
+        public ActionResult<string> Login(AuthViewModel credentials)
         {
             try
             {
-                var response = _service.Authenticate(user);
+                var response = _service.Authenticate(credentials);
                 if (response == null)
                     return Unauthorized();
 
-                var token = _service.GenerateToken(user);
+                var token = _service.GenerateToken(response);
                 return Ok(token);
             }
             catch (Exception exe)

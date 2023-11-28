@@ -29,28 +29,25 @@ namespace Repository
             _config = config;
         }
 
-        public UserDTO Authenticate(UserViewModel user)
+        public AuthDTO Authenticate(AuthViewModel credentials)
         {
-            var userDB = _context.users.FirstOrDefault(u => u.email == user.email);
+            var userDB = _context.users.FirstOrDefault(u => u.email == credentials.email);
 
-            // Simulate database lookup to validate credentials
-            if (userDB != null)
+            if(userDB != null)
             {
-                return new UserDTO
+                return new AuthDTO
                 {
-                    user_id = user.user_id,
-                    name = user.name,
-                    email = user.email,
-                    password = user.password,
-                    role_id = user.role_id,
-                    // Include any additional user information needed in the token
+                    user_id = userDB.user_id,
+                    name = userDB.name,
+                    email = userDB.email,
+                    role_id = userDB.role_id,
                 };
             }
 
-            return null; // Invalid credentials
+            return null;
         }
 
-        public string GenerateToken(UserViewModel user)
+        public string GenerateToken(AuthDTO user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Authentication:SecretForKey"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

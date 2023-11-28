@@ -19,12 +19,12 @@ namespace Services.Services
             _repository = repository;
         }
 
-        public UserDTO Authenticate(UserViewModel user)
+        public AuthDTO Authenticate(AuthViewModel credentials)
         {
-            return _repository.Authenticate(user);
+            return _repository.Authenticate(credentials);
         }
 
-        public string GenerateToken(UserViewModel user)
+        public string GenerateToken(AuthDTO user)
         {
             return _repository.GenerateToken(user);
         }
