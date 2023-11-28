@@ -54,15 +54,14 @@ namespace Repository
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Authentication:SecretForKey"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var userRole = _context.roles.Single(r => r.role_id == user.role_id).role_id;
-            var role = _roleRepository.GetRoleById(userRole);
+            var userRole = _context.roles.Single(r => r.role_id == user.role_id).role_name;
 
             var claims = new List<Claim>
         {
-            new Claim("iduser", user.user_id.ToString()),
-            new Claim("name", user.name),
-            new Claim("email", user.email),
-            new Claim("role", role)
+            new Claim(ClaimTypes.NameIdentifier, user.user_id.ToString()),
+            new Claim(ClaimTypes.Name, user.name),
+            new Claim(ClaimTypes.Email, user.email),
+            new Claim(ClaimTypes.Role, userRole)
             // Add any additional claims as needed
         };
 

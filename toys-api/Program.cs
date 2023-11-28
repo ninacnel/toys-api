@@ -100,6 +100,8 @@ namespace api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseCors("MyCors");
