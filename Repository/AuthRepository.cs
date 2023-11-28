@@ -21,12 +21,14 @@ namespace Repository
         private readonly toystoreContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
+        private readonly RoleRepository _roleRepository;
 
-        public AuthRepository(toystoreContext context, IConfiguration config)
+        public AuthRepository(toystoreContext context, IConfiguration config, RoleRepository roleRepository)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
             _config = config;
+            _roleRepository = roleRepository;
         }
 
         public AuthDTO Authenticate(AuthViewModel credentials)
@@ -52,12 +54,15 @@ namespace Repository
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Authentication:SecretForKey"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            var userRole = _context.roles.Single(r => r.role_id == user.role_id).role_id;
+            var role = _roleRepository.GetRoleById(userRole);
+
             var claims = new List<Claim>
         {
             new Claim("iduser", user.user_id.ToString()),
             new Claim("name", user.name),
             new Claim("email", user.email),
-            new Claim("role", user.role_id.ToString())
+            new Claim("role", role)
             // Add any additional claims as needed
         };
 

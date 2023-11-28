@@ -1,5 +1,4 @@
-﻿
-namespace Data.DTOs
+﻿namespace Data.DTOs
 {
     public class CategoryDTO
     {
