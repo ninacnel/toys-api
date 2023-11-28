@@ -19,7 +19,7 @@ namespace Services.Services
             return _repository.GetCategories();
         }
 
-        public CategoryDTO GetCategoryById(int id)
+        public string GetCategoryById(int id)
         {
             return _repository.GetCategoryById(id);
         }

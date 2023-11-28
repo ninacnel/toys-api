@@ -11,7 +11,7 @@ namespace Services.IServices
     public interface ICategoryService
     {
         List<CategoryDTO> GetCategories();
-        CategoryDTO GetCategoryById(int id);
+        string GetCategoryById(int id);
         CategoryDTO AddCategory(CategoryViewModel category);
         CategoryDTO UpdateCategory(CategoryViewModel category);
         void DeleteCategory(int id);

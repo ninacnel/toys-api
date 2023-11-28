@@ -18,6 +18,8 @@ namespace api
             builder.Services.AddScoped<OrderRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<AuthRepository>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<RoleRepository>();
         }
     }
 }

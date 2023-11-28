@@ -25,10 +25,11 @@ namespace Repository
             return response;
         }
 
-        public CategoryDTO GetCategoryById(int id)
+        public string GetCategoryById(int id)
         {
             var category = _context.categories.FirstOrDefault(c => c.category_code == id);
-            var response = _mapper.Map<CategoryDTO>(category);
+            var categoryDTO = _mapper.Map<CategoryDTO>(category);
+            var response = categoryDTO.category_name;
             return response;
         }
 

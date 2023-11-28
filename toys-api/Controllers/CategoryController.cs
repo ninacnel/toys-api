@@ -40,7 +40,7 @@ namespace toys_api.Controllers
         }
 
         [HttpGet("/get-category-by-id")]
-        public ActionResult<CategoryDTO> GetCategoryById(int id)
+        public ActionResult<string> GetCategoryById(int id)
         {
             try
             {
