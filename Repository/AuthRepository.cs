@@ -3,16 +3,11 @@ using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
 using Data.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -21,14 +16,12 @@ namespace Repository
         private readonly toystoreContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        private readonly RoleRepository _roleRepository;
 
-        public AuthRepository(toystoreContext context, IConfiguration config, RoleRepository roleRepository)
+        public AuthRepository(toystoreContext context, IConfiguration config)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
             _config = config;
-            _roleRepository = roleRepository;
         }
 
         public AuthDTO Authenticate(AuthViewModel credentials)

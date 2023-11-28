@@ -83,6 +83,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> UpdateToy(ToyViewModel toy)
         {
             try
@@ -123,6 +124,7 @@ namespace api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "sysadmin")]
         public ActionResult<ToyDTO> DeleteToy(int id)
         {
             try
@@ -138,6 +140,7 @@ namespace api.Controllers
             }
         }
         [HttpPatch("/soft-delete-toy")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> SoftDeleteToy(int id)
         {
             try
@@ -154,6 +157,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/recover-toy")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> RecoverToy(int id)
         {
             try

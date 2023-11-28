@@ -1,5 +1,6 @@
 ﻿using Data.DTOs;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.IServices;
 using Services.Services;
@@ -8,6 +9,7 @@ namespace toys_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _service;

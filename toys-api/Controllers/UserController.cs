@@ -1,5 +1,6 @@
 ﻿using Data.DTOs;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.IServices;
 
@@ -19,6 +20,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "sysadmin")]
         public ActionResult<List<UserDTO>> GetUsers()
         {
             try
@@ -39,6 +41,7 @@ namespace api.Controllers
         }
 
         [HttpGet("getuserbyid")]
+        [Authorize(Roles = "sysadmin,admin,customer")]
         public ActionResult<UserDTO> GetUserById(int id)
         {
             try
@@ -77,6 +80,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "sysadmin,admin,customer")]
         public ActionResult<UserDTO> UpdateUser(UserViewModel user)
         {
             try
@@ -96,6 +100,7 @@ namespace api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "sysadmin")]
         public ActionResult<UserDTO> DeleteUser(int id)
         {
             try
@@ -112,6 +117,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/soft-delete-user")]
+        [Authorize(Roles = "customer,admin")]
         public ActionResult<UserDTO> SoftDeleteUser(int id)
         {
             try
@@ -128,6 +134,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/recover-user")]
+        [Authorize(Roles = "sysadmin")]
         public ActionResult<UserDTO> RecoverUser(int id)
         {
             try
