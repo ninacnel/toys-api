@@ -1,5 +1,6 @@
 ﻿using Data.DTOs;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.IServices;
 
@@ -58,6 +59,7 @@ namespace toys_api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "customer")]
         public ActionResult<OrderDTO> AddOrder(OrderViewModel order)
         {
             try
@@ -78,6 +80,7 @@ namespace toys_api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public ActionResult<OrderDTO> UpdateOrder(OrderViewModel order)
         {
             try
@@ -98,6 +101,7 @@ namespace toys_api.Controllers
         }
 
         [HttpPatch]
+        [Authorize(Roles = "admin")]
         public ActionResult<OrderDTO> ModifyToyCode(/*int id, */OrderLineViewModel orderLine)
         {
             try
@@ -118,6 +122,7 @@ namespace toys_api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "sysadmin")]
         public ActionResult<OrderDTO> DeleteOrder(int id)
         {
             try
@@ -134,6 +139,7 @@ namespace toys_api.Controllers
         }
 
         [HttpPatch("/soft-delete-order")]
+        [Authorize(Roles = "admin")]
         public ActionResult<OrderDTO> SoftDeleteOrder(int id)
         {
             try
@@ -150,6 +156,7 @@ namespace toys_api.Controllers
         }
 
         [HttpPatch("/recover-order")]
+        [Authorize(Roles = "admin")]
         public ActionResult<OrderDTO> RecoverOrder(int id)
         {
             try

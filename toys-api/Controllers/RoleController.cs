@@ -1,5 +1,7 @@
 ﻿using Data.DTOs;
+using Data.Models;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.IServices;
 
@@ -7,6 +9,7 @@ namespace toys_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "sysadmin")]
     public class RoleController : Controller
     {
         private readonly IRoleService _service;
