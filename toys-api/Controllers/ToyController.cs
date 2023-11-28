@@ -1,5 +1,7 @@
 ﻿using Data.DTOs;
+using Data.Models;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.IServices;
 using Services.Services;
@@ -60,6 +62,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> AddToy([FromBody] ToyViewModel toy)
         {
             try
@@ -99,6 +102,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/change-price")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> ChangePrice(int id, int newPrice)
         {
             try
