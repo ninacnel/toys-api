@@ -20,6 +20,8 @@ namespace api
             builder.Services.AddScoped<AuthRepository>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<RoleRepository>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<EmailRepository>();
         }
     }
 }

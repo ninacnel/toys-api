@@ -10,11 +10,13 @@ namespace Repository
     {
         private readonly toystoreContext _context;
         private readonly IMapper _mapper;
+        private readonly EmailRepository _email;
 
-        public UserRepository(toystoreContext context)
+        public UserRepository(toystoreContext context, EmailRepository emailRepository)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
+            _email = emailRepository;
         }
 
         public List<UserDTO> GetUsers()
@@ -49,6 +51,15 @@ namespace Repository
             newUser.email = user.email;
             newUser.password = user.password;
             newUser.role_id = user.role_id;
+
+            var emailDto = new EmailDto
+            {
+                To = user.email,
+                Subject = "Account Created",
+                Body = "Your account has been successfully created."
+            };
+
+            _email.SendEmail(emailDto);
 
             return newUser;
         }

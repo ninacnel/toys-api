@@ -11,11 +11,13 @@ namespace Repository
     {
         private readonly toystoreContext _context;
         private readonly IMapper _mapper;
+        private readonly EmailRepository _email;
 
-        public OrderRepository(toystoreContext context)
+        public OrderRepository(toystoreContext context, EmailRepository email)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
+            _email = email;
         }
 
         public List<OrderDTO> GetOrders()
@@ -78,7 +80,18 @@ namespace Repository
                 nextOrderLineId++;
             }
 
-            _context.SaveChanges();  // Save changes for order lines
+            _context.SaveChanges();
+
+            var clientEmail = _context.users.Single(u => u.user_id == orderEntity.client_id).email;
+
+            var emailDto = new EmailDto
+            {
+                To = clientEmail,
+                Subject = "Order Created",
+                Body = $"Your order has been successfully created. Total Amount ${orderDTO.total_amount}"
+            };
+
+            _email.SendEmail(emailDto);
 
             return orderDTO;
 
