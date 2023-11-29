@@ -5,6 +5,7 @@
         public int code { get; set; }
         public string name { get; set; }
         public int? category_id { get; set; }
+        public string category_name { get; set; }
         public string description { get; set; }
         //public byte[] toy_img { get; set; }
         public int stock { get; set; }
