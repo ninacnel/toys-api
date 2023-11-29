@@ -2,6 +2,7 @@
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
+using Data.ViewModels;
 
 namespace Repository
 {
@@ -27,6 +28,34 @@ namespace Repository
             _context.SaveChanges();
 
             return toyDTO;
+        }
+
+        public void DecreaseStock(OrderViewModel order)
+        {
+            foreach (var orderLineViewModel in order.order_lines)
+            {
+                var toy = _context.toys.Single(t => t.code == orderLineViewModel.toy_code);
+                toy.stock -= orderLineViewModel.quantity;
+            }
+
+            _context.SaveChanges();
+        }
+
+        public bool CheckStock(int? toycode, OrderLineViewModel orderline)
+        {
+            var actualStock = _context.toys.Single(t => t.code == toycode).stock;
+
+            var threshold = _context.toys.Single(t => t.code == toycode).stock_threshold;
+
+            if (actualStock > threshold)
+            {
+                if (actualStock > orderline.quantity)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
