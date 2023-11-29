@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+//$2a$10$e64A4qVdYQdVSvQ7vi0Il.0aT5Y49MfQdCTIVUG9eQW2t1ZDOqOCW
 namespace Repository
 {
     public class AuthRepository
@@ -28,15 +28,20 @@ namespace Repository
         {
             var userDB = _context.users.FirstOrDefault(u => u.email == credentials.email);
 
-            if(userDB != null)
+            if (userDB != null)
             {
-                return new AuthDTO
+                // Verify the password
+                if (BCrypt.Net.BCrypt.Verify(credentials.password, userDB.password))
                 {
-                    user_id = userDB.user_id,
-                    name = userDB.name,
-                    email = userDB.email,
-                    role_id = userDB.role_id,
-                };
+                    // Password is correct, return AuthDTO
+                    return new AuthDTO
+                    {
+                        user_id = userDB.user_id,
+                        name = userDB.name,
+                        email = userDB.email,
+                        role_id = userDB.role_id,
+                    };
+                }
             }
 
             return null;

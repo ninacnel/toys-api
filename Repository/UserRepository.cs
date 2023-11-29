@@ -3,6 +3,7 @@ using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
 using Data.ViewModels;
+using BCrypt.Net;
 
 namespace Repository
 {
@@ -37,20 +38,26 @@ namespace Repository
         {
             UserDTO newUser = new UserDTO();
 
+            // Hash the password
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.password);
+
+            // Save the user to the database with the hashed password
             _context.users.Add(new users()
             {
                 name = user.name,
                 email = user.email,
-                password = user.password,
+                password = hashedPassword, // Save the hashed password
                 role_id = user.role_id,
+                state = true,
             });
 
             _context.SaveChanges();
 
             newUser.name = user.name;
             newUser.email = user.email;
-            newUser.password = user.password;
+            newUser.password = hashedPassword; // Save the hashed password
             newUser.role_id = user.role_id;
+            newUser.state = true;
 
             var emailDto = new EmailDto
             {
