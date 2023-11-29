@@ -11,21 +11,31 @@ namespace Repository
     {
         private readonly toystoreContext _context;
         private readonly IMapper _mapper;
+        private readonly CategoryRepository _category;
 
-        public ToyRepository(toystoreContext context)
+        public ToyRepository(toystoreContext context, CategoryRepository category)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
+            _category = category;
         }
 
         public List<ToyDTO> GetToys()
         {
             var toys = _context.toys.ToList();
             var response = _mapper.Map<List<ToyDTO>>(toys);
+
+            foreach (var toyDTO in response)
+            {
+                toyDTO.category_name = _category.GetCategoryById(toyDTO.category_id);
+            }
+
             return response;
         }
         public ToyDTO GetToyById(int id)
         {
+            var toyCategory = _category.GetCategoryById(id);
+
             var toyWithPrices = _context.toys
                 .Where(t => t.code == id)
                 .Include(t => t.price_history)
@@ -38,6 +48,10 @@ namespace Repository
 
             // Map the price history to a list of PriceDTO
             toyDTO.PriceHistory = _mapper.Map<List<PriceDTO>>(priceHistoryList);
+
+            // Get category name for the toy
+            toyDTO.category_name = _category.GetCategoryById(toyDTO.category_id);
+
 
             return toyDTO;
         }

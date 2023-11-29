@@ -24,7 +24,7 @@ namespace Repository
             return response;
         }
 
-        public string GetCategoryById(int id)
+        public string GetCategoryById(int? id)
         {
             var category = _context.categories.FirstOrDefault(c => c.category_code == id);
             var categoryDTO = _mapper.Map<CategoryDTO>(category);
