@@ -12,12 +12,14 @@ namespace Repository
         private readonly toystoreContext _context;
         private readonly IMapper _mapper;
         private readonly EmailRepository _email;
+        private readonly StockRepository _stock;
 
-        public OrderRepository(toystoreContext context, EmailRepository email)
+        public OrderRepository(toystoreContext context, EmailRepository email, StockRepository stock)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
             _email = email;
+            _stock = stock;
         }
 
         public List<OrderDTO> GetOrders()
@@ -57,7 +59,7 @@ namespace Repository
 
             foreach (var line in order.order_lines)
             {
-                if (!CheckStock(line.toy_code, line))
+                if (!_stock.CheckStock(line.toy_code, line))
                 {
                     // Rollback changes and return null if at least one toy doesn't have sufficient stock
                     _context.Entry(orderEntity).State = EntityState.Detached;
@@ -95,13 +97,7 @@ namespace Repository
             _context.SaveChanges();
 
             // Decrease stock for each toy in order lines
-            foreach (var orderLineViewModel in order.order_lines)
-            {
-                var toy = _context.toys.Single(t => t.code == orderLineViewModel.toy_code);
-                toy.stock -= orderLineViewModel.quantity;
-            }
-
-            _context.SaveChanges();
+            _stock.DecreaseStock(order);
 
             var clientEmail = _context.users.Single(u => u.user_id == orderEntity.client_id).email;
 
@@ -201,23 +197,6 @@ namespace Repository
             }
 
             return totalAmount;
-        }
-
-        private bool CheckStock(int? toycode, OrderLineViewModel orderline)
-        {
-            var actualStock = _context.toys.Single(t => t.code == toycode).stock;
-
-            var threshold = _context.toys.Single(t => t.code == toycode).stock_threshold;
-
-            if (actualStock > threshold)
-            {
-                if (actualStock > orderline.quantity)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 }
