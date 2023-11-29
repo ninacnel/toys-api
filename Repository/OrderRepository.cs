@@ -94,6 +94,15 @@ namespace Repository
 
             _context.SaveChanges();
 
+            // Decrease stock for each toy in order lines
+            foreach (var orderLineViewModel in order.order_lines)
+            {
+                var toy = _context.toys.Single(t => t.code == orderLineViewModel.toy_code);
+                toy.stock -= orderLineViewModel.quantity;
+            }
+
+            _context.SaveChanges();
+
             var clientEmail = _context.users.Single(u => u.user_id == orderEntity.client_id).email;
 
             var emailDto = new EmailDto
@@ -157,39 +166,6 @@ namespace Repository
             return orderLineChanged;
         }
 
-        private decimal CalculateTotalAmount(List<OrderLineViewModel> orderLines)
-        {
-            decimal totalAmount = 0;
-
-            foreach (var line in orderLines)
-            {
-                totalAmount += line.quantity * line.price;
-            }
-
-            return totalAmount;
-        }
-        private List<OrderLineDTO> MapOrderLines(List<OrderLineViewModel> orderLines) 
-        {
-            return _mapper.Map<List<OrderLineDTO>>(orderLines);
-        }
-
-        private bool CheckStock(int? toycode, OrderLineViewModel orderline)
-        {
-            var actualStock = _context.toys.Single(t => t.code == toycode).stock;
-
-            var threshold = _context.toys.Single(t => t.code == toycode).stock_threshold;
-
-            if(actualStock > threshold)
-            {
-                if (actualStock > orderline.quantity)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public void DeleteOrder(int id)
         {
             _context.orders.Remove(_context.orders.Single(o => o.order_id == id));
@@ -212,6 +188,36 @@ namespace Repository
                 order.state = true;
             }
             _context.SaveChanges();
+        }
+
+        //helpful methods
+        private decimal CalculateTotalAmount(List<OrderLineViewModel> orderLines)
+        {
+            decimal totalAmount = 0;
+
+            foreach (var line in orderLines)
+            {
+                totalAmount += line.quantity * line.price;
+            }
+
+            return totalAmount;
+        }
+
+        private bool CheckStock(int? toycode, OrderLineViewModel orderline)
+        {
+            var actualStock = _context.toys.Single(t => t.code == toycode).stock;
+
+            var threshold = _context.toys.Single(t => t.code == toycode).stock_threshold;
+
+            if (actualStock > threshold)
+            {
+                if (actualStock > orderline.quantity)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
