@@ -72,7 +72,7 @@ namespace Repository
                     toy_code = orderLineViewModel.toy_code,
                     quantity = orderLineViewModel.quantity,
                     price = orderLineViewModel.price,
-                    sub_total = orderLineViewModel.sub_total,
+                    sub_total = orderLineViewModel.quantity * orderLineViewModel.price,
                     wrapped = orderLineViewModel.wrapped
                 };
 
