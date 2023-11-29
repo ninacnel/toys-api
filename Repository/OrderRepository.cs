@@ -53,6 +53,18 @@ namespace Repository
             // Map order and add it to the context
             var orderEntity = _mapper.Map<orders>(orderDTO);
             _context.orders.Add(orderEntity);
+            //check stock availability
+
+            foreach (var line in order.order_lines)
+            {
+                if (!CheckStock(line.toy_code, line))
+                {
+                    // Rollback changes and return null if at least one toy doesn't have sufficient stock
+                    _context.Entry(orderEntity).State = EntityState.Detached;
+                    return null;
+                }
+            }
+
             _context.SaveChanges();  // Save to get the generated order_id
 
             // Get the generated order_id
@@ -159,6 +171,23 @@ namespace Repository
         private List<OrderLineDTO> MapOrderLines(List<OrderLineViewModel> orderLines) 
         {
             return _mapper.Map<List<OrderLineDTO>>(orderLines);
+        }
+
+        private bool CheckStock(int? toycode, OrderLineViewModel orderline)
+        {
+            var actualStock = _context.toys.Single(t => t.code == toycode).stock;
+
+            var threshold = _context.toys.Single(t => t.code == toycode).stock_threshold;
+
+            if(actualStock > threshold)
+            {
+                if (actualStock > orderline.quantity)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void DeleteOrder(int id)
