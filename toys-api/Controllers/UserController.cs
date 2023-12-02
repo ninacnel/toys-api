@@ -80,7 +80,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "sysadmin,admin,customer")]
+        //[Authorize(Roles = "sysadmin,admin,customer")]
         public ActionResult<UserDTO> UpdateUser(UserViewModel user)
         {
             try

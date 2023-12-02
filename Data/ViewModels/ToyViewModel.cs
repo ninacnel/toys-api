@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Data.ViewModels
+﻿namespace Data.ViewModels
 {
     public class ToyViewModel
     {
@@ -12,6 +6,7 @@ namespace Data.ViewModels
         public string name { get; set; }
         public int? category_id { get; set; }
         public string description { get; set; }
+        public string image_path { get; set; }
         //public byte[] toy_img { get; set; }
         public int stock { get; set; }
         public int stock_threshold { get; set; }

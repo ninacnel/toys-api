@@ -32,6 +32,7 @@ namespace Repository
 
             return response;
         }
+
         public ToyDTO GetToyById(int id)
         {
             var toyCategory = _category.GetCategoryById(id);
@@ -60,12 +61,15 @@ namespace Repository
         {
             ToyDTO newToy = new ToyDTO();
 
+            //byte[] imageBytes = File.ReadAllBytes(toy.image_path);
+
             _context.toys.Add(new toys()
             {
                 code = toy.code,
                 name = toy.name,
                 category_id = toy.category_id,
                 description = toy.description,
+                toy_img = File.ReadAllBytes(toy.image_path),
                 stock = toy.stock,
                 stock_threshold = toy.stock_threshold,
                 state = true,
@@ -78,6 +82,7 @@ namespace Repository
             newToy.name = toy.name;
             newToy.category_id = toy.category_id;
             newToy.description = toy.description;
+            newToy.toy_img = File.ReadAllBytes(toy.image_path);
             newToy.state = true;
             newToy.stock = toy.stock;
             newToy.stock_threshold = toy.stock_threshold;

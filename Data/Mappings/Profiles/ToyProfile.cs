@@ -25,11 +25,21 @@ namespace Data.Mappings.Profiles
                     name = t.name,
                     category_id = t.category_id,
                     description = t.description,
+                    toy_img = t.toy_img,
                     stock = t.stock,
                     stock_threshold = t.stock_threshold,
                     state = t.state,
                     price = t.price,
                 }).ToList());
+
+            CreateMap<toys, ToyDTO>()
+                .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => ConvertImageToBase64(src.toy_img)));
+
+            
+        }
+        private string ConvertImageToBase64(byte[] imageBytes)
+        {
+            return imageBytes != null ? Convert.ToBase64String(imageBytes) : null;
         }
     }
 }
