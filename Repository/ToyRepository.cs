@@ -3,6 +3,7 @@ using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
 using Data.ViewModels;
+using MailKit.Net.Imap;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository
@@ -34,6 +35,13 @@ namespace Repository
         }
         public ToyDTO GetToyById(int id)
         {
+            var toyDB = _context.toys.SingleOrDefault(t => t.code == id);
+
+            if (toyDB == null)
+            {
+                return null;
+            }
+
             var toyCategory = _category.GetCategoryById(id);
 
             var toyWithPrices = _context.toys

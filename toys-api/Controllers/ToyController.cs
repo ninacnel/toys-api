@@ -13,9 +13,9 @@ namespace api.Controllers
     public class ToyController : Controller
     {
         private readonly IToyService _service;
-        private readonly ILogger<ToyService> _logger;
+        private readonly ILogger<ToyController> _logger;
 
-        public ToyController(IToyService service, ILogger<ToyService> logger)
+        public ToyController(IToyService service, ILogger<ToyController> logger)
         {
             _service = service;
             _logger = logger;
