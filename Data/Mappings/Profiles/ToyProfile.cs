@@ -16,7 +16,8 @@ namespace Data.Mappings.Profiles
             CreateMap<toys, ToyDTO>();
 
             CreateMap<toys, ToyDTO>()
-            .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.price_history != null ? src.price_history.ToList() : null));
+                .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => src.toy_img))
+                .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.price_history != null ? src.price_history.ToList() : null));
 
             CreateMap<List<toys>, List<ToyDTO>>()
                 .ConvertUsing(src => src.Select(t => new ToyDTO

@@ -61,9 +61,9 @@ namespace api.Controllers
             }
         }
 
-        [HttpPost]
-        [Authorize(Roles = "admin")]
-        public ActionResult<ToyDTO> AddToy([FromBody] ToyViewModel toy)
+        [HttpPost("/add-toy")]
+        //[Authorize(Roles = "admin")]
+        public ActionResult<ToyDTO> AddToy([FromForm] ToyViewModel toy)
         {
             try
             {
