@@ -76,17 +76,18 @@ namespace Repository
             users userDB = _context.users.Single(f => f.user_id == user.user_id);
             UserDTO newUser = new UserDTO();
 
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.password);
 
             userDB.name = user.name;
             userDB.email = user.email;
-            userDB.password = user.password;
+            userDB.password = hashedPassword;
             userDB.role_id = user.role_id;
             
             _context.SaveChanges();
 
             newUser.name = user.name;
             newUser.email = user.email;
-            newUser.password = user.password;
+            newUser.password = hashedPassword;
             newUser.role_id = user.role_id;
             
             return newUser;

@@ -32,14 +32,20 @@ namespace Repository
 
             return response;
         }
+
         public ToyDTO GetToyById(int id)
         {
-            var toyCategory = _category.GetCategoryById(id);
+            var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+
+            if (toyExists == null)
+            {
+                return null;
+            }
 
             var toyWithPrices = _context.toys
                 .Where(t => t.code == id)
                 .Include(t => t.price_history)
-                .FirstOrDefault();
+                .SingleOrDefault();
 
             var toyDTO = _mapper.Map<ToyDTO>(toyWithPrices);
 
@@ -49,9 +55,7 @@ namespace Repository
             // Map the price history to a list of PriceDTO
             toyDTO.PriceHistory = _mapper.Map<List<PriceDTO>>(priceHistoryList);
 
-            // Get category name for the toy
             toyDTO.category_name = _category.GetCategoryById(toyDTO.category_id);
-
 
             return toyDTO;
         }
@@ -60,31 +64,60 @@ namespace Repository
         {
             ToyDTO newToy = new ToyDTO();
 
-            _context.toys.Add(new toys()
+            if (toy.ImageFile != null)
             {
-                code = toy.code,
-                name = toy.name,
-                category_id = toy.category_id,
-                description = toy.description,
-                stock = toy.stock,
-                stock_threshold = toy.stock_threshold,
-                state = true,
-                price = toy.price,
-            });
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    try
+                    {
+                        // Read the file data from the IFormFile
+                        toy.ImageFile.CopyTo(ms);
 
-            _context.SaveChanges();
+                        // Reset the position of the MemoryStream
+                        ms.Position = 0;
 
-            newToy.code = toy.code;
-            newToy.name = toy.name;
-            newToy.category_id = toy.category_id;
-            newToy.description = toy.description;
-            newToy.state = true;
-            newToy.stock = toy.stock;
-            newToy.stock_threshold = toy.stock_threshold;
-            newToy.price = toy.price;
+                        // Save the file bytes to the database
+                        _context.toys.Add(new toys()
+                        {
+                            code = toy.code,
+                            name = toy.name,
+                            category_id = toy.category_id,
+                            description = toy.description,
+                            toy_img = ms.ToArray(), // Convert MemoryStream to byte array
+                            stock = toy.stock,
+                            stock_threshold = toy.stock_threshold,
+                            state = true,
+                            price = toy.price,
+                        });
+
+                        _context.SaveChanges();
+
+                        // Reset the position again if needed
+                        ms.Position = 0;
+
+                        newToy.code = toy.code;
+                        newToy.name = toy.name;
+                        newToy.category_id = toy.category_id;
+                        newToy.description = toy.description;
+                        newToy.toy_img = ms.ToArray(); // Convert IFormFile to byte array
+                        newToy.state = true;
+                        newToy.stock = toy.stock;
+                        newToy.stock_threshold = toy.stock_threshold;
+                        newToy.price = toy.price;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle the exception (log, provide feedback, etc.)
+                        Console.WriteLine($"Error: {ex.Message}");
+                        // You might want to throw the exception again if not handled
+                    }
+                }
+            }
 
             return newToy;
         }
+
+
 
         public ToyDTO UpdateToy(ToyViewModel toy)
         {

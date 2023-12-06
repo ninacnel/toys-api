@@ -7,7 +7,7 @@
         public int? category_id { get; set; }
         public string category_name { get; set; }
         public string description { get; set; }
-        //public byte[] toy_img { get; set; }
+        public byte[] toy_img { get; set; }
         public int stock { get; set; }
         public int stock_threshold { get; set; }
         public bool? state { get; set; }
