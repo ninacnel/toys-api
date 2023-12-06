@@ -83,7 +83,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> UpdateToy(ToyViewModel toy)
         {
             try
