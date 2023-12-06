@@ -36,7 +36,15 @@ namespace Data.Mappings.Profiles
             CreateMap<toys, ToyDTO>()
                 .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => ConvertImageToBase64(src.toy_img)));
 
-            
+            CreateMap<toys, ToyDTO>()
+                .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => src.toy_img))
+                .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.price_history.Select(ph => new PriceDTO
+                {
+                    toy_code = src.code,
+                    price = ph.price,
+                    change_date = ph.change_date
+                }).ToList()));
+
         }
         private string ConvertImageToBase64(byte[] imageBytes)
         {
