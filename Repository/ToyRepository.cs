@@ -35,10 +35,17 @@ namespace Repository
 
         public ToyDTO GetToyById(int id)
         {
+            var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+
+            if (toyExists == null)
+            {
+                return null;
+            }
+
             var toyWithPrices = _context.toys
                 .Where(t => t.code == id)
                 .Include(t => t.price_history)
-                .FirstOrDefault();
+                .SingleOrDefault();
 
             var toyDTO = _mapper.Map<ToyDTO>(toyWithPrices);
 
