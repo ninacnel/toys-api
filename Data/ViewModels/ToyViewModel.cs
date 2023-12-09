@@ -9,12 +9,12 @@ namespace Data.ViewModels
         public int? category_id { get; set; }
         public string description { get; set; }
         //public string image_path { get; set; }
-        public byte[] image_path { get; set; }
+        public byte[]? image_path { get; set; }
         public int stock { get; set; }
         public int stock_threshold { get; set; }
         public decimal price { get; set; }
 
-            public IFormFile ImageFile { get; set; }
+            public IFormFile? ImageFile { get; set; }
         //public byte[] qr_code { get; set; }
     }
 }

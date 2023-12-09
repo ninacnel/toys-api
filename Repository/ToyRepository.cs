@@ -4,6 +4,7 @@ using Data.Mappings;
 using Data.Models;
 using Data.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Repository
 {
@@ -107,9 +108,7 @@ namespace Repository
                     }
                     catch (Exception ex)
                     {
-                        // Handle the exception (log, provide feedback, etc.)
                         Console.WriteLine($"Error: {ex.Message}");
-                        // You might want to throw the exception again if not handled
                     }
                 }
             }
@@ -143,6 +142,67 @@ namespace Repository
             //as we're adding a new price we should update the price_history, with a transaction or trigger
             return newToy;
         }
+
+        public string ChangePhoto(int id, byte[] newPhoto)
+        {
+            var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+
+            if (toyExists == null)
+            {
+                return "No encontrado";
+            }
+
+            if (newPhoto != null)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    try
+                    {
+                        // Use the Write method instead of CopyTo
+                        ms.Write(newPhoto, 0, newPhoto.Length);
+
+                        // Save the file bytes to the database
+                        toyExists.toy_img = ms.ToArray();
+
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }
+            }
+
+            return "Foto cambiada exitosamente.";
+        }
+
+        //public string ChangePhoto(int id, string newPhoto)
+        //{
+        //    var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+
+        //    if (toyExists == null)
+        //    {
+        //        return "No encontrado";
+        //    }
+
+        //    if (!string.IsNullOrEmpty(newPhoto))
+        //    {
+        //        try
+        //        {
+        //            byte[] photoBytes = Convert.FromBase64String(newPhoto);
+        //            toyExists.toy_img = photoBytes;
+
+        //            _context.SaveChanges();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine($"Error: {ex.Message}");
+        //        }
+        //    }
+
+        //    return "Foto cambiada exitosamente.";
+        //}
+
 
         public ToyDTO ChangePrice(int id, int newPrice)
         {
