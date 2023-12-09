@@ -33,6 +33,10 @@ namespace Services.Services
         {
             return _repository.ChangePrice(id, newPrice);
         }
+        public string ChangePhoto(int id, byte[] newPhoto)
+        {
+            return _repository.ChangePhoto(id, newPhoto);
+        }
         public void DeleteToy(int id)
         {
             _repository.DeleteToy(id);

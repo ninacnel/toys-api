@@ -9,6 +9,7 @@ namespace Services.IServices
         ToyDTO GetToyById(int id);
         ToyDTO AddToy(ToyViewModel toy);
         ToyDTO UpdateToy(ToyViewModel toy);
+        string ChangePhoto(int id, byte[] newPhoto);
         ToyDTO ChangePrice(int id, int newPrice);
         void DeleteToy(int id);
         void SoftDeleteToy(int id);

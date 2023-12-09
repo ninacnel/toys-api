@@ -103,7 +103,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/change-price")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> ChangePrice(int id, int newPrice)
         {
             try
@@ -119,6 +119,27 @@ namespace api.Controllers
             catch (Exception exe)
             {
                 _logger.LogError($"Error en ToyController, metodo ChangePrice: {exe.Message}");
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPatch("/change-photo")]
+        //[Authorize(Roles = "admin")]
+        public ActionResult<string> ChangePhoto(int id, byte[] newPhoto)
+        {
+            try
+            {
+                var response = _service.ChangePhoto(id, newPhoto);
+                if(response == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(response);
+            }
+            catch (Exception exe)
+            {
+                _logger.LogError($"Error en ToyController, metodo ChangePhoto: {exe.Message}");
                 return BadRequest(exe.Message);
             }
         }
@@ -140,7 +161,7 @@ namespace api.Controllers
             }
         }
         [HttpPatch("/soft-delete-toy")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> SoftDeleteToy(int id)
         {
             try
@@ -157,7 +178,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/recover-toy")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> RecoverToy(int id)
         {
             try
