@@ -13,36 +13,36 @@ namespace Data.Mappings.Profiles
     {
         public ToyProfile()
         {
-            CreateMap<toys, ToyDTO>();
+            CreateMap<Toy, ToyDTO>();
 
-            CreateMap<toys, ToyDTO>()
-                .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => src.toy_img))
-                .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.price_history != null ? src.price_history.ToList() : null));
+            CreateMap<Toy, ToyDTO>()
+                .ForMember(dest => dest.ToyImg, opt => opt.MapFrom(src => src.ToyImg))
+                .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.PriceHistory != null ? src.PriceHistory.ToList() : null));
 
-            CreateMap<List<toys>, List<ToyDTO>>()
+            CreateMap<List<Toy>, List<ToyDTO>>()
                 .ConvertUsing(src => src.Select(t => new ToyDTO
                 {
-                    code = t.code,
-                    name = t.name,
-                    category_id = t.category_id,
-                    description = t.description,
-                    toy_img = t.toy_img,
-                    stock = t.stock,
-                    stock_threshold = t.stock_threshold,
-                    state = t.state,
-                    price = t.price,
+                    Code = t.Code,
+                    Name = t.Name,
+                    CategoryId = t.CategoryId,
+                    Description = t.Description,
+                    ToyImg = t.ToyImg,
+                    Stock = t.Stock,
+                    StockThreshold = t.StockThreshold,
+                    State = t.State,
+                    Price = t.Price,
                 }).ToList());
 
-            CreateMap<toys, ToyDTO>()
-                .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => ConvertImageToBase64(src.toy_img)));
+            CreateMap<Toy, ToyDTO>()
+                .ForMember(dest => dest.ToyImg, opt => opt.MapFrom(src => ConvertImageToBase64(src.ToyImg)));
 
-            CreateMap<toys, ToyDTO>()
-                .ForMember(dest => dest.toy_img, opt => opt.MapFrom(src => src.toy_img))
-                .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.price_history.Select(ph => new PriceDTO
+            CreateMap<Toy, ToyDTO>()
+                .ForMember(dest => dest.ToyImg, opt => opt.MapFrom(src => src.ToyImg))
+                .ForMember(dest => dest.PriceHistory, opt => opt.MapFrom(src => src.PriceHistory.Select(ph => new PriceDTO
                 {
-                    toy_code = src.code,
-                    price = ph.price,
-                    change_date = ph.change_date
+                    ToyCode = src.Code,
+                    Price = ph.Price,
+                    ChangeDate = ph.ChangeDate
                 }).ToList()));
 
         }

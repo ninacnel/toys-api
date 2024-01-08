@@ -9,16 +9,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
+using Data;
 
 namespace Repository
 {
     public class AuthRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
 
-        public AuthRepository(toystoreContext context, IConfiguration config)
+        public AuthRepository(DataContext context, IConfiguration config)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -27,20 +28,20 @@ namespace Repository
 
         public AuthDTO Authenticate(AuthViewModel credentials)
         {
-            var userDB = _context.users.FirstOrDefault(u => u.email == credentials.email);
+            var userDB = _context.users.FirstOrDefault(u => u.Email == credentials.email);
 
             if (userDB != null)
             {
                 // Verify the password
-                if (BCrypt.Net.BCrypt.Verify(credentials.password, userDB.password))
+                if (BCrypt.Net.BCrypt.Verify(credentials.password, userDB.Password))
                 {
                     // Password is correct, return AuthDTO
                     return new AuthDTO
                     {
-                        user_id = userDB.user_id,
-                        name = userDB.name,
-                        email = userDB.email,
-                        role_id = userDB.role_id,
+                        user_id = userDB.UserId,
+                        name = userDB.Name,
+                        email = userDB.Email,
+                        role_id = userDB.RoleId,
                     };
                 }
             }
@@ -53,7 +54,7 @@ namespace Repository
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Authentication:SecretForKey"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var userRole = _context.roles.Single(r => r.role_id == user.role_id).role_name;
+            var userRole = _context.roles.Single(r => r.RoleId == user.role_id).RoleName;
 
             var claims = new List<Claim>
         {

@@ -2,9 +2,9 @@
 {
     public class PriceDTO
     {
-        public int? toy_code { get; set; }
-        public decimal price { get; set; }
-        public DateTime change_date { get; set; }
+        public int? ToyCode { get; set; }
+        public decimal Price { get; set; }
+        public DateTime ChangeDate { get; set; }
 
     }
 }

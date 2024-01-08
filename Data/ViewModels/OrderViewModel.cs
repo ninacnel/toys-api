@@ -1,23 +1,25 @@
-﻿namespace Data.ViewModels
+﻿using Data.DTOs;
+
+namespace Data.ViewModels
 {
     public class OrderViewModel
     {
-        public int order_id { get; set; }
-        public int? client_id { get; set; }
-        public decimal total_amount { get; set; }
-        public DateTime order_date { get; set; }
-        public bool? state { get; set; }
-        public List<OrderLineViewModel> order_lines { get; set; }
+        public int OrderId { get; set; }
+        public int? ClientId { get; set; }
+        public decimal TotalAmount { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public bool? State { get; set; }
+        public List<OrderLineDTO> OrderLines { get; set; }
     }
 
     public class OrderLineViewModel
     {
-        public int? order_id { get; set; }
-        public int order_line_id { get; set; }
-        public int? toy_code { get; set; }
-        public int quantity { get; set; }
-        public decimal price { get; set; }
-        public decimal sub_total { get; set; }
-        public bool? wrapped { get; set; }
+        public int? OrderId { get; set; }
+        public int OrderLineId { get; set; }
+        public int? ToyCode { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal SubTotal { get; set; }
+        public bool? Wrapped { get; set; }
     }
 }

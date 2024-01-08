@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
@@ -10,11 +11,11 @@ namespace Repository
 {
     public class ToyRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly CategoryRepository _category;
 
-        public ToyRepository(toystoreContext context, CategoryRepository category)
+        public ToyRepository(DataContext context, CategoryRepository category)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -28,7 +29,7 @@ namespace Repository
 
             foreach (var toyDTO in response)
             {
-                toyDTO.category_name = _category.GetCategoryById(toyDTO.category_id);
+                toyDTO.CategoryName = _category.GetCategoryById(toyDTO.CategoryId);
             }
 
             return response;
@@ -36,7 +37,7 @@ namespace Repository
 
         public ToyDTO GetToyById(int id)
         {
-            var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+            var toyExists = _context.toys.SingleOrDefault(t => t.Code == id);
 
             if (toyExists == null)
             {
@@ -44,19 +45,19 @@ namespace Repository
             }
 
             var toyWithPrices = _context.toys
-                .Where(t => t.code == id)
-                .Include(t => t.price_history)
+                .Where(t => t.Code == id)
+                .Include(t => t.PriceHistory)
                 .SingleOrDefault();
 
             var toyDTO = _mapper.Map<ToyDTO>(toyWithPrices);
 
             // Convert the HashSet<price_history> to List<price_history>
-            var priceHistoryList = toyWithPrices.price_history.ToList();
+            var priceHistoryList = toyWithPrices.PriceHistory.ToList();
 
             // Map the price history to a list of PriceDTO
             toyDTO.PriceHistory = _mapper.Map<List<PriceDTO>>(priceHistoryList);
 
-            toyDTO.category_name = _category.GetCategoryById(toyDTO.category_id);
+            toyDTO.CategoryName = _category.GetCategoryById(toyDTO.CategoryId);
 
             return toyDTO;
         }
@@ -78,17 +79,17 @@ namespace Repository
                         ms.Position = 0;
 
                         // Save the file bytes to the database
-                        _context.toys.Add(new toys()
+                        _context.toys.Add(new Toy()
                         {
-                            code = toy.code,
-                            name = toy.name,
-                            category_id = toy.category_id,
-                            description = toy.description,
-                            toy_img = ms.ToArray(), // Convert MemoryStream to byte array
-                            stock = toy.stock,
-                            stock_threshold = toy.stock_threshold,
-                            state = true,
-                            price = toy.price,
+                            Code = toy.Code,
+                            Name = toy.Name,
+                            CategoryId = toy.CategoryId,
+                            Description = toy.Description,
+                            ToyImg = ms.ToArray(), // Convert MemoryStream to byte array
+                            Stock = toy.Stock,
+                            StockThreshold = toy.StockThreshold,
+                            State = true,
+                            Price = toy.Price,
                         });
 
                         _context.SaveChanges();
@@ -96,15 +97,15 @@ namespace Repository
                         // Reset the position again if needed
                         ms.Position = 0;
 
-                        newToy.code = toy.code;
-                        newToy.name = toy.name;
-                        newToy.category_id = toy.category_id;
-                        newToy.description = toy.description;
-                        newToy.toy_img = ms.ToArray(); // Convert IFormFile to byte array
-                        newToy.state = true;
-                        newToy.stock = toy.stock;
-                        newToy.stock_threshold = toy.stock_threshold;
-                        newToy.price = toy.price;
+                        newToy.Code = toy.Code;
+                        newToy.Name = toy.Name;
+                        newToy.CategoryId = toy.CategoryId;
+                        newToy.Description = toy.Description;
+                        newToy.ToyImg = ms.ToArray(); // Convert IFormFile to byte array
+                        newToy.State = true;
+                        newToy.Stock = toy.Stock;
+                        newToy.StockThreshold = toy.StockThreshold;
+                        newToy.Price = toy.Price;
                     }
                     catch (Exception ex)
                     {
@@ -120,24 +121,24 @@ namespace Repository
 
         public ToyDTO UpdateToy(ToyViewModel toy)
         {
-            toys toyDB = _context.toys.Single(t => t.code == toy.code);
+            Toy toyDB = _context.toys.Single(t => t.Code == toy.Code);
             ToyDTO newToy = new ToyDTO();
 
-            toyDB.name = toy.name;
-            toyDB.description = toy.description;
-            toyDB.stock = toy.stock;
-            toyDB.stock_threshold = toy.stock_threshold;
-            toyDB.price = toy.price;
-            toyDB.category_id = toy.category_id;
+            toyDB.Name = toy.Name;
+            toyDB.Description = toy.Description;
+            toyDB.Stock = toy.Stock;
+            toyDB.StockThreshold = toy.StockThreshold;
+            toyDB.Price = toy.Price;
+            toyDB.CategoryId = toy.CategoryId;
 
             _context.SaveChanges();
 
-            newToy.name = toy.name;
-            newToy.description = toy.description;
-            newToy.stock = toy.stock;
-            newToy.stock_threshold = toy.stock_threshold;
-            newToy.price = toy.price;
-            newToy.category_id = toy.category_id;
+            newToy.Name = toy.Name;
+            newToy.Description = toy.Description;
+            newToy.Stock = toy.Stock;
+            newToy.StockThreshold = toy.StockThreshold;
+            newToy.Price = toy.Price;
+            newToy.CategoryId = toy.CategoryId;
 
             //as we're adding a new price we should update the price_history, with a transaction or trigger
             return newToy;
@@ -145,7 +146,7 @@ namespace Repository
 
         public string ChangePhoto(int id, byte[] newPhoto)
         {
-            var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+            var toyExists = _context.toys.SingleOrDefault(t => t.Code == id);
 
             if (toyExists == null)
             {
@@ -162,7 +163,7 @@ namespace Repository
                         ms.Write(newPhoto, 0, newPhoto.Length);
 
                         // Save the file bytes to the database
-                        toyExists.toy_img = ms.ToArray();
+                        toyExists.ToyImg = ms.ToArray();
 
                         _context.SaveChanges();
                     }
@@ -207,7 +208,7 @@ namespace Repository
         public ToyDTO ChangePrice(int id, int newPrice)
         {
             // Retrieve the toy with the specified ID
-            var toy = _context.toys.SingleOrDefault(t => t.code == id);
+            var toy = _context.toys.SingleOrDefault(t => t.Code == id);
 
             if (toy == null)
             {
@@ -216,17 +217,17 @@ namespace Repository
             }
 
             // Save the current price to the price_history table
-            var priceHistory = new price_history
+            var priceHistory = new PriceHistory
             {
-                toy_code = toy.code,
-                price = toy.price,
-                change_date = DateTime.Now // You can adjust the date as needed
+                ToyCode = toy.Code,
+                Price = toy.Price,
+                ChangeDate = DateTime.Now // You can adjust the date as needed
             };
 
-            _context.price_history.Add(priceHistory);
+            _context.priceHistories.Add(priceHistory);
 
             // Update the price of the toy
-            toy.price = newPrice;
+            toy.Price = newPrice;
 
             // Save changes to the database
             _context.SaveChanges();
@@ -239,25 +240,25 @@ namespace Repository
 
         public void DeleteToy(int id)
         {
-            _context.toys.Remove(_context.toys.Single(t => t.code == id));
+            _context.toys.Remove(_context.toys.Single(t => t.Code == id));
             _context.SaveChanges();
         }
         public void SoftDeleteToy(int id)
         {
-            toys toy = _context.toys.Single(t => t.code == id);
-            if (toy.state == true)
+            Toy toy = _context.toys.Single(t => t.Code == id);
+            if (toy.State == true)
             {
-                toy.state = false;
+                toy.State = false;
             }
             _context.SaveChanges();
         }
 
         public void RecoverToy(int id)
         {
-            toys toy = _context.toys.Single(t => t.code == id);
-            if (toy.state == false)
+            Toy toy = _context.toys.Single(t => t.Code == id);
+            if (toy.State == false)
             {
-                toy.state = true;
+                toy.State = true;
             }
             _context.SaveChanges();
         }

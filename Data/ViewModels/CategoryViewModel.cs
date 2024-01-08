@@ -8,8 +8,8 @@ namespace Data.ViewModels
 {
     public class CategoryViewModel
     {
-        public int category_code { get; set; }
-        public string category_name { get; set; }
-        public bool? state { get; set; }
+        public int CategoryCode { get; set; }
+        public string CategoryName { get; set; }
+        public bool? State { get; set; }
     }
 }

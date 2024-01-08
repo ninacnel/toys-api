@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
@@ -8,10 +9,10 @@ namespace Repository
 {
     public class StockRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public StockRepository(toystoreContext context)
+        public StockRepository(DataContext context)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -19,9 +20,9 @@ namespace Repository
 
         public ToyDTO AddStock(int toycode)
         {
-            var toyDB = _context.toys.Single(t => t.code == toycode);
+            var toyDB = _context.toys.Single(t => t.Code == toycode);
 
-            toyDB.stock += 50;
+            toyDB.Stock += 50;
 
             var toyDTO = _mapper.Map<ToyDTO>(toyDB);
 
@@ -32,24 +33,24 @@ namespace Repository
 
         public void DecreaseStock(OrderViewModel order)
         {
-            foreach (var orderLineViewModel in order.order_lines)
+            foreach (var orderLineViewModel in order.OrderLines)
             {
-                var toy = _context.toys.Single(t => t.code == orderLineViewModel.toy_code);
-                toy.stock -= orderLineViewModel.quantity;
+                var toy = _context.toys.Single(t => t.Code == orderLineViewModel.ToyCode);
+                toy.Stock -= orderLineViewModel.Quantity;
             }
 
             _context.SaveChanges();
         }
 
-        public bool CheckStock(int? toycode, OrderLineViewModel orderline)
+        public bool CheckStock(int? toycode, OrderLineDTO orderline)
         {
-            var actualStock = _context.toys.Single(t => t.code == toycode).stock;
+            var actualStock = _context.toys.Single(t => t.Code == toycode).Stock;
 
-            var threshold = _context.toys.Single(t => t.code == toycode).stock_threshold;
+            var threshold = _context.toys.Single(t => t.Code == toycode).StockThreshold;
 
             if (actualStock > threshold)
             {
-                if (actualStock > orderline.quantity)
+                if (actualStock > orderline.Quantity)
                 {
                     return true;
                 }

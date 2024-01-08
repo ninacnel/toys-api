@@ -8,17 +8,17 @@ namespace Data.Mappings.Profiles
     {
         public UserProfile()
         {
-            CreateMap<users, UserDTO>();
+            CreateMap<User, UserDTO>();
 
-            CreateMap<List<users>, List<UserDTO>>()
+            CreateMap<List<User>, List<UserDTO>>()
                 .ConvertUsing(src => src.Select(u => new UserDTO
                 {
-                    user_id = u.user_id, 
-                    name = u.name,
-                    email = u.email,
-                    password = u.password,
-                    role_id = u.role_id,
-                    state = u.state,
+                    UserId = u.UserId, 
+                    Name = u.Name,
+                    Email = u.Email,
+                    Password = u.Password,
+                    RoleId = u.RoleId,
+                    State = u.State,
                 }).ToList());
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
@@ -9,12 +10,12 @@ namespace Repository
 {
     public class OrderRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly EmailRepository _email;
         private readonly StockRepository _stock;
 
-        public OrderRepository(toystoreContext context, EmailRepository email, StockRepository stock)
+        public OrderRepository(DataContext context, EmailRepository email, StockRepository stock)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -32,17 +33,17 @@ namespace Repository
         public OrderDTO GetOrderById(int id)
         {
             var orderAndDetails = _context.orders
-                .Where(o => o.order_id == id)
-                .Include(od => od.order_line)
+                .Where(o => o.OrderId == id)
+                .Include(od => od.OrderLines)
                 .FirstOrDefault();
 
             var orderDTO = _mapper.Map<OrderDTO>(orderAndDetails);
 
             // Convert the HashSet<price_history> to List<price_history>
-            var details = orderAndDetails.order_line.ToList();
+            var details = orderAndDetails.OrderLines.ToList();
 
             // Map the price history to a list of PriceDTO
-            orderDTO.order_lines = _mapper.Map<List<OrderLineDTO>>(details);
+            orderDTO.OrderLines = _mapper.Map<List<OrderLineDTO>>(details);
 
             return orderDTO;
         }
@@ -50,16 +51,16 @@ namespace Repository
         {
             var orderDTO = _mapper.Map<OrderDTO>(order);
 
-            orderDTO.total_amount = CalculateTotalAmount(order.order_lines);
+            orderDTO.TotalAmount = CalculateTotalAmount(order.OrderLines);
 
             // Map order and add it to the context
-            var orderEntity = _mapper.Map<orders>(orderDTO);
+            var orderEntity = _mapper.Map<Order>(orderDTO);
             _context.orders.Add(orderEntity);
             //check stock availability
 
-            foreach (var line in order.order_lines)
+            foreach (var line in order.OrderLines)
             {
-                if (!_stock.CheckStock(line.toy_code, line))
+                if (!_stock.CheckStock(line.ToyCode, line))
                 {
                     // Rollback changes and return null if at least one toy doesn't have sufficient stock
                     _context.Entry(orderEntity).State = EntityState.Detached;
@@ -70,27 +71,27 @@ namespace Repository
             _context.SaveChanges();  // Save to get the generated order_id
 
             // Get the generated order_id
-            var orderId = orderEntity.order_id;
+            var orderId = orderEntity.OrderId;
 
             // Reset order_line_id for each new order
 
             var nextOrderLineId = 1;
 
             // Set the order_id and order_line_id for each line manually
-            foreach (var orderLineViewModel in order.order_lines)
+            foreach (var orderLineViewModel in order.OrderLines)
             {
-                var orderLineEntity = new order_line
+                var orderLineEntity = new OrderLine
                 {
-                    order_id = orderId,
-                    order_line_id = nextOrderLineId,
-                    toy_code = orderLineViewModel.toy_code,
-                    quantity = orderLineViewModel.quantity,
-                    price = orderLineViewModel.price,
-                    sub_total = orderLineViewModel.quantity * orderLineViewModel.price,
-                    wrapped = orderLineViewModel.wrapped
+                    OrderId = orderId,
+                    OrderLineId = nextOrderLineId,
+                    ToyCode = orderLineViewModel.ToyCode,
+                    Quantity = orderLineViewModel.Quantity,
+                    Price = orderLineViewModel.Price,
+                    SubTotal = orderLineViewModel.Quantity * orderLineViewModel.Price,
+                    Wrapped = orderLineViewModel.Wrapped
                 };
 
-                _context.order_line.Add(orderLineEntity);
+                _context.ordersLines.Add(orderLineEntity);
                 nextOrderLineId++;
             }
 
@@ -99,13 +100,13 @@ namespace Repository
             // Decrease stock for each toy in order lines
             _stock.DecreaseStock(order);
 
-            var clientEmail = _context.users.Single(u => u.user_id == orderEntity.client_id).email;
+            var clientEmail = _context.users.Single(u => u.UserId == orderEntity.ClientId).Email;
 
             var emailDto = new EmailDto
             {
                 To = clientEmail,
                 Subject = "Order Created",
-                Body = $"Your order has been successfully created. Total Amount ${orderDTO.total_amount}"
+                Body = $"Your order has been successfully created. Total Amount ${orderDTO.TotalAmount}"
             };
 
             _email.SendEmail(emailDto);
@@ -116,20 +117,20 @@ namespace Repository
 
         public OrderDTO UpdateOrder(OrderViewModel order)
         {
-            orders orderDB = _context.orders.Single(o => o.order_id == order.order_id);
+            Order orderDB = _context.orders.Single(o => o.OrderId == order.OrderId);
             OrderDTO newOrder = new OrderDTO();
 
-            orderDB.client_id = order.client_id;
-            orderDB.order_date = order.order_date;
-            orderDB.total_amount = order.total_amount;
-            orderDB.state = order.state;
+            orderDB.ClientId = order.ClientId;
+            orderDB.OrderDate = (DateTime)order.OrderDate;
+            orderDB.TotalAmount = order.TotalAmount;
+            orderDB.State = order.State;
 
             _context.SaveChanges();
 
-            newOrder.client_id = order.client_id;
-            newOrder.order_date = order.order_date;
-            newOrder.total_amount = order.total_amount;
-            newOrder.state = order.state;
+            newOrder.ClientId = order.ClientId;
+            newOrder.OrderDate = order.OrderDate;
+            newOrder.TotalAmount = order.TotalAmount;
+            newOrder.State = order.State;
 
             return newOrder;
             //even if some fields are required, like order_line,
@@ -139,7 +140,7 @@ namespace Repository
         public OrderDTO ModifyToyCode(/*int id, */OrderLineViewModel orderLine)
         {
             // Find the specific order_line based on order_id and order_line_id
-            order_line orderLineDB = _context.order_line.SingleOrDefault(ol => ol.order_id == orderLine.order_id && ol.order_line_id == orderLine.order_line_id);
+            OrderLine orderLineDB = _context.ordersLines.SingleOrDefault(ol => ol.OrderId == orderLine.OrderId && ol.OrderLineId == orderLine.OrderLineId);
 
             if (orderLineDB == null)
             {
@@ -149,7 +150,7 @@ namespace Repository
             }
 
             // Modify the toy_code property
-            orderLineDB.toy_code = orderLine.toy_code;
+            orderLineDB.ToyCode = orderLine.ToyCode;
 
             // Save changes to the database
             _context.SaveChanges();
@@ -164,36 +165,36 @@ namespace Repository
 
         public void DeleteOrder(int id)
         {
-            _context.orders.Remove(_context.orders.Single(o => o.order_id == id));
+            _context.orders.Remove(_context.orders.Single(o => o.OrderId == id));
             _context.SaveChanges();
         }
         public void SoftDeleteOrder(int id)
         {
-            orders order = _context.orders.Single(o => o.order_id == id);
-            if (order.state == true)
+            Order order = _context.orders.Single(o => o.OrderId == id);
+            if (order.State == true)
             {
-                order.state = false;
+                order.State = false;
             }
             _context.SaveChanges();
         }
         public void RecoverOrder(int id)
         {
-            orders order = _context.orders.Single(o => o.order_id == id);
-            if (order.state == false)
+            Order order = _context.orders.Single(o => o.OrderId == id);
+            if (order.State == false)
             {
-                order.state = true;
+                order.State = true;
             }
             _context.SaveChanges();
         }
 
         //helpful methods
-        private decimal CalculateTotalAmount(List<OrderLineViewModel> orderLines)
+        private decimal CalculateTotalAmount(List<OrderLineDTO> orderLines)
         {
             decimal totalAmount = 0;
 
             foreach (var line in orderLines)
             {
-                totalAmount += line.quantity * line.price;
+                totalAmount += line.Quantity * line.Price;
             }
 
             return totalAmount;

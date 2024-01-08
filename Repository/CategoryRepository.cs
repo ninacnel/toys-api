@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
@@ -8,10 +9,10 @@ namespace Repository
 {
     public class CategoryRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public CategoryRepository(toystoreContext context)
+        public CategoryRepository(DataContext context)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -26,9 +27,9 @@ namespace Repository
 
         public string GetCategoryById(int? id)
         {
-            var category = _context.categories.FirstOrDefault(c => c.category_code == id);
+            var category = _context.categories.FirstOrDefault(c => c.CategoryCode == id);
             var categoryDTO = _mapper.Map<CategoryDTO>(category);
-            var response = categoryDTO.category_name;
+            var response = categoryDTO.CategoryName;
             return response;
         }
 
@@ -36,53 +37,53 @@ namespace Repository
         {
             CategoryDTO newCategory = new CategoryDTO();
 
-            _context.categories.Add(new categories()
+            _context.categories.Add(new Category()
             {
-                category_name = category.category_name,
+                CategoryName = category.CategoryName,
             });
 
             _context.SaveChanges();
 
-            newCategory.category_name = category.category_name;
+            newCategory.CategoryName = category.CategoryName;
 
             return newCategory;
         }
 
         public CategoryDTO UpdateCategory(CategoryViewModel category)
         {
-            categories categoryDB = _context.categories.Single(c => c.category_code == category.category_code);
+            Category categoryDB = _context.categories.Single(c => c.CategoryCode == category.CategoryCode);
             CategoryDTO newCategory = new CategoryDTO();
 
-            categoryDB.category_name = category.category_name;
+            categoryDB.CategoryName = category.CategoryName;
 
             _context.SaveChanges();
 
-            newCategory.category_name = category.category_name;
+            newCategory.CategoryName = category.CategoryName;
 
             return newCategory;
         }
 
         public void DeleteCategory(int id)
         {
-            _context.categories.Remove(_context.categories.Single(c => c.category_code == id));
+            _context.categories.Remove(_context.categories.Single(c => c.CategoryCode == id));
             _context.SaveChanges();
         }
 
         public void SoftDeleteCategory(int id)
         {
-            categories category = _context.categories.Single(c => c.category_code == id);
-            if (category.state == true)
+            Category category = _context.categories.Single(c => c.CategoryCode == id);
+            if (category.State == true)
             {
-                category.state = false;
+                category.State = false;
             }
             _context.SaveChanges();
         }
         public void RecoverCategory(int id)
         {
-            categories category = _context.categories.Single(c => c.category_code == id);
-            if (category.state == false)
+            Category category = _context.categories.Single(c => c.CategoryCode == id);
+            if (category.State == false)
             {
-                category.state = true;
+                category.State = true;
             }
             _context.SaveChanges();
         }

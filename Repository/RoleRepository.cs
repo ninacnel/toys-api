@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
@@ -8,10 +9,10 @@ namespace Repository
 {
     public class RoleRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public RoleRepository(toystoreContext context)
+        public RoleRepository(DataContext context)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -26,9 +27,9 @@ namespace Repository
         
         public string GetRoleById(int id)
         {
-            var role = _context.roles.SingleOrDefault(r => r.role_id == id);
+            var role = _context.roles.SingleOrDefault(r => r.RoleId == id);
             var roleDTO = _mapper.Map<RoleDTO>(role);
-            var response = roleDTO.role_name;
+            var response = roleDTO.RoleName;
             return response;
         }
 
@@ -36,28 +37,28 @@ namespace Repository
         {
             RoleDTO newRole = new RoleDTO();
 
-            _context.roles.Add(new roles
+            _context.roles.Add(new Role
             {
-                role_name = role.role_name,
+                RoleName = role.RoleName,
             });
 
             _context.SaveChanges();
 
-            newRole.role_name = role.role_name;
+            newRole.RoleName = role.RoleName;
 
             return newRole;
         }
 
         public RoleDTO ModifyRole(RoleViewModel role)
         {
-            roles roleDB = _context.roles.Single(r => r.role_id == role.role_id);
+            Role roleDB = _context.roles.Single(r => r.RoleId == role.RoleId);
             RoleDTO newRole = new RoleDTO();
 
-            roleDB.role_name = role.role_name;
+            roleDB.RoleName = role.RoleName;
 
             _context.SaveChanges();
 
-            newRole.role_name = role.role_name;
+            newRole.RoleName = role.RoleName;
 
             return newRole;
         }
