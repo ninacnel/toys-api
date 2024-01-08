@@ -5,6 +5,7 @@ using Data.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Data;
 
 namespace api
 {
@@ -31,7 +32,8 @@ namespace api
             });
 
             // DB
-            builder.Services.AddDbContext<toystoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<DataContext>(
+                        o => o.UseNpgsql(builder.Configuration.GetConnectionString("ToysDb")));
 
             CompositeRoot.DependencyInjection(builder);
 
