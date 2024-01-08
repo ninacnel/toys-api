@@ -28,7 +28,7 @@ namespace Repository
 
         public AuthDTO Authenticate(AuthViewModel credentials)
         {
-            var userDB = _context.users.FirstOrDefault(u => u.Email == credentials.email);
+            var userDB = _context.users.FirstOrDefault(u => u.Name == credentials.username);
 
             if (userDB != null)
             {
