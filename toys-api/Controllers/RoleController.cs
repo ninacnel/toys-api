@@ -9,7 +9,7 @@ namespace toys_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "sysadmin")]
+    //[Authorize(Roles = "sysadmin")]
     public class RoleController : Controller
     {
         private readonly IRoleService _service;

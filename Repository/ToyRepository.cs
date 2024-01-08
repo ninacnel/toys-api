@@ -208,7 +208,7 @@ namespace Repository
         public ToyDTO ChangePrice(int id, int newPrice)
         {
             // Retrieve the toy with the specified ID
-            var toy = _context.toys.SingleOrDefault(t => t,Code == id);
+            var toy = _context.toys.SingleOrDefault(t => t.Code == id);
 
             if (toy == null)
             {
@@ -227,7 +227,7 @@ namespace Repository
             _context.priceHistories.Add(priceHistory);
 
             // Update the price of the toy
-            toy.price = newPrice;
+            toy.Price = newPrice;
 
             // Save changes to the database
             _context.SaveChanges();

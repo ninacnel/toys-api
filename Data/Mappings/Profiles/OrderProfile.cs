@@ -9,31 +9,31 @@ namespace Data.Mappings.Profiles
     {
         public OrderProfile() 
         {
-            CreateMap<orders, OrderDTO>();
+            CreateMap<Order, OrderDTO>();
                 //.ForMember(dest => dest.order_date, opt => opt.MapFrom(src => (DateTime?)src.order_date));
 
-            CreateMap<order_line, OrderLineDTO>();
+            CreateMap<OrderLine, OrderLineDTO>();
 
             CreateMap<OrderViewModel, OrderDTO>()
-                .ForMember(dest => dest.order_lines, opt => opt.MapFrom(src => src.order_lines));
+                .ForMember(dest => dest.OrderLines, opt => opt.MapFrom(src => src.OrderLines));
 
             CreateMap<OrderLineViewModel, OrderLineDTO>();
 
-            CreateMap<OrderDTO, orders>()
-                .ForMember(dest => dest.order_id, opt => opt.Ignore())
-                .ForMember(dest => dest.order_line, opt => opt.Ignore());
+            CreateMap<OrderDTO, Order>()
+                .ForMember(dest => dest.OrderId, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderLines, opt => opt.Ignore());
 
-            CreateMap<OrderLineDTO, order_line>()
-                .ForMember(dest => dest.order_id, opt => opt.Ignore());
+            CreateMap<OrderLineDTO, OrderLine>()
+                .ForMember(dest => dest.OrderId, opt => opt.Ignore());
 
-            CreateMap<List<OrderLineDTO>, List<order_line>>()
+            CreateMap<List<OrderLineDTO>, List<OrderLine>>()
                 .ConvertUsing((src, dest, context) =>
                  {
-                     var orderLines = new List<order_line>();
+                     var orderLines = new List<OrderLine>();
 
                      foreach (var orderLineDto in src)
                      {
-                         orderLines.Add(context.Mapper.Map<order_line>(orderLineDto));
+                         orderLines.Add(context.Mapper.Map<OrderLine>(orderLineDto));
                      }
 
                      return orderLines;

@@ -17,6 +17,10 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.UseSerialColumns();
+
+            modelBuilder.Entity<OrderLine>()
+            .HasKey(ol => new { ol.OrderId, ol.OrderLineId }); // Define composite primary key
+
         }
 
         public DbSet<Category> categories { get; set; }
