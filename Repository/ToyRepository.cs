@@ -221,7 +221,7 @@ namespace Repository
             {
                 ToyCode = toy.Code,
                 Price = toy.Price,
-                ChangeDate = DateTime.Now // You can adjust the date as needed
+                ChangeDate = DateTime.UtcNow // Use UTC time for timestamp
             };
 
             _context.priceHistories.Add(priceHistory);
