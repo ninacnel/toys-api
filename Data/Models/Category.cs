@@ -21,5 +21,7 @@ namespace Data.Models
         [Column("state")]
         public bool? State { get; set; }
 
+        // Navigation property
+        public virtual ICollection<Toy> Toys { get; set; }
     }
 }

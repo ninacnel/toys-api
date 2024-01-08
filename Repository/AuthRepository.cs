@@ -9,16 +9,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
+using Data;
 
 namespace Repository
 {
     public class AuthRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
 
-        public AuthRepository(toystoreContext context, IConfiguration config)
+        public AuthRepository(DataContext context, IConfiguration config)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();

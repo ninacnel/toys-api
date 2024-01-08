@@ -20,5 +20,11 @@ namespace Data
         }
 
         public DbSet<Category> categories { get; set; }
+        public DbSet<Role> roles { get; set; }
+        public DbSet<Toy> toys { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<PriceHistory> priceHistories { get; set; }
+        public DbSet<Order> orders { get; set; }
+        public DbSet<OrderLine> ordersLines { get; set; }    
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Data.DTOs;
+using Data;
 using Data.Models;
 
 namespace Data.Mappings.Profiles
@@ -8,14 +9,14 @@ namespace Data.Mappings.Profiles
     {
         public CategoryProfile() 
         {
-            CreateMap<categories, CategoryDTO>();
+            CreateMap<Category, CategoryDTO>();
 
-            CreateMap<List<categories>, List<CategoryDTO>>()
+            CreateMap<List<Category>, List<CategoryDTO>>()
                 .ConvertUsing(src => src.Select(c => new CategoryDTO
                 {
-                    category_code = c.category_code,
-                    category_name = c.category_name,
-                    state = c.state,
+                    CategoryCode = c.CategoryCode,
+                    CategoryName = c.CategoryName,
+                    State = c.State,
                 }).ToList());
         }    
     }

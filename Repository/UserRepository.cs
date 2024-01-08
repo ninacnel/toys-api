@@ -4,16 +4,17 @@ using Data.Mappings;
 using Data.Models;
 using Data.ViewModels;
 using BCrypt.Net;
+using Data;
 
 namespace Repository
 {
     public class UserRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly EmailRepository _email;
 
-        public UserRepository(toystoreContext context, EmailRepository emailRepository)
+        public UserRepository(DataContext context, EmailRepository emailRepository)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
@@ -29,7 +30,7 @@ namespace Repository
 
         public UserDTO GetUserById(int id)
         {
-            var user = _context.users.SingleOrDefault(u => u.user_id == id);
+            var user = _context.users.SingleOrDefault(u => u.UserId == id);
             var response = _mapper.Map<UserDTO>(user);
             return response;
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Data.DTOs;
 using Data.Mappings;
 using Data.Models;
@@ -8,10 +9,10 @@ namespace Repository
 {
     public class StockRepository
     {
-        private readonly toystoreContext _context;
+        private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public StockRepository(toystoreContext context)
+        public StockRepository(DataContext context)
         {
             _context = context;
             _mapper = AutoMapperConfig.Configure();
