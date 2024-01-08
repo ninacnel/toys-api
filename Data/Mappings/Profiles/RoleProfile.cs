@@ -8,9 +8,9 @@ namespace Data.Mappings.Profiles
     {
         public RoleProfile()
         {
-            CreateMap<roles, RoleDTO>();
+            CreateMap<Role, RoleDTO>();
 
-            CreateMap<RoleDTO, roles>();
+            CreateMap<RoleDTO, Role>();
         }
     }
 }

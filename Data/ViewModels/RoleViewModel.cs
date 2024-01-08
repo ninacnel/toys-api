@@ -8,7 +8,7 @@ namespace Data.ViewModels
 {
     public class RoleViewModel
     {
-        public int role_id { get; set; }
-        public string role_name { get; set; }
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
     }
 }
