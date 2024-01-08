@@ -62,7 +62,7 @@ namespace api.Controllers
         }
 
         [HttpPost("/add-toy")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> AddToy([FromForm] ToyViewModel toy)
         {
             try
@@ -83,7 +83,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> UpdateToy(ToyViewModel toy)
         {
             try
@@ -103,7 +103,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/change-price")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> ChangePrice(int id, int newPrice)
         {
             try
@@ -124,7 +124,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/change-photo")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<string> ChangePhoto(int id, byte[] newPhoto)
         {
             try
@@ -161,7 +161,7 @@ namespace api.Controllers
             }
         }
         [HttpPatch("/soft-delete-toy")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> SoftDeleteToy(int id)
         {
             try
@@ -178,7 +178,7 @@ namespace api.Controllers
         }
 
         [HttpPatch("/recover-toy")]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ToyDTO> RecoverToy(int id)
         {
             try

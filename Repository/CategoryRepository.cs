@@ -40,6 +40,7 @@ namespace Repository
             _context.categories.Add(new Category()
             {
                 CategoryName = category.CategoryName,
+                State = true,
             });
 
             _context.SaveChanges();
