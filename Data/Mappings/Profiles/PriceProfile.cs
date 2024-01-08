@@ -13,7 +13,7 @@ namespace Data.Mappings.Profiles
     {
         public PriceProfile()
         {
-            CreateMap<price_history, PriceDTO>();
+            CreateMap<PriceHistory, PriceDTO>();
 
             //CreateMap<List<price_history>, List<PriceDTO>>()
             //    .ConvertUsing(src => src.Select(p => new PriceDTO
