@@ -33,9 +33,9 @@ namespace Services.Services
         {
             return _repository.ChangePrice(id, newPrice);
         }
-        public string ChangePhoto(int id, byte[] newPhoto)
+        public string ChangePhoto(ToyPhotoViewModel toyPhoto)
         {
-            return _repository.ChangePhoto(id, newPhoto);
+            return _repository.ChangePhoto(toyPhoto);
         }
         public void DeleteToy(int id)
         {

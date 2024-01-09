@@ -16,4 +16,10 @@ namespace Data.ViewModels
 
             public IFormFile? ImageFile { get; set; }
     }
+
+    public class ToyPhotoViewModel
+    {
+        public int Code { get; set; }
+        public IFormFile? ImageFile { get; set; }
+    }
 }

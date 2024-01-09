@@ -117,8 +117,6 @@ namespace Repository
             return newToy;
         }
 
-
-
         public ToyDTO UpdateToy(ToyViewModel toy)
         {
             Toy toyDB = _context.toys.Single(t => t.Code == toy.Code);
@@ -144,23 +142,26 @@ namespace Repository
             return newToy;
         }
 
-        public string ChangePhoto(int id, byte[] newPhoto)
+        public string ChangePhoto(ToyPhotoViewModel toyPhoto)
         {
-            var toyExists = _context.toys.SingleOrDefault(t => t.Code == id);
+            var toyExists = _context.toys.SingleOrDefault(t => t.Code == toyPhoto.Code);
 
             if (toyExists == null)
             {
                 return "No encontrado";
             }
 
-            if (newPhoto != null)
+            if (toyPhoto.ImageFile != null)
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
                     try
                     {
-                        // Use the Write method instead of CopyTo
-                        ms.Write(newPhoto, 0, newPhoto.Length);
+                        // Read the file data from the IFormFile
+                        toyPhoto.ImageFile.CopyTo(ms);
+
+                        // Reset the position of the MemoryStream
+                        ms.Position = 0;
 
                         // Save the file bytes to the database
                         toyExists.ToyImg = ms.ToArray();
@@ -177,33 +178,38 @@ namespace Repository
             return "Foto cambiada exitosamente.";
         }
 
-        //public string ChangePhoto(int id, string newPhoto)
+        //public string ChangePhoto(int id, byte[] newPhoto)
         //{
-        //    var toyExists = _context.toys.SingleOrDefault(t => t.code == id);
+        //    var toyExists = _context.toys.SingleOrDefault(t => t.Code == id);
 
         //    if (toyExists == null)
         //    {
         //        return "No encontrado";
         //    }
 
-        //    if (!string.IsNullOrEmpty(newPhoto))
+        //    if (newPhoto != null)
         //    {
-        //        try
+        //        using (MemoryStream ms = new MemoryStream())
         //        {
-        //            byte[] photoBytes = Convert.FromBase64String(newPhoto);
-        //            toyExists.toy_img = photoBytes;
+        //            try
+        //            {
+        //                // Use the Write method instead of CopyTo
+        //                ms.Write(newPhoto, 0, newPhoto.Length);
 
-        //            _context.SaveChanges();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine($"Error: {ex.Message}");
+        //                // Save the file bytes to the database
+        //                toyExists.ToyImg = ms.ToArray();
+
+        //                _context.SaveChanges();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"Error: {ex.Message}");
+        //            }
         //        }
         //    }
 
         //    return "Foto cambiada exitosamente.";
         //}
-
 
         public ToyDTO ChangePrice(int id, int newPrice)
         {

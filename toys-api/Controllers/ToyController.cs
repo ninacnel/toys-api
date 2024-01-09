@@ -125,11 +125,11 @@ namespace api.Controllers
 
         [HttpPatch("/change-photo")]
         [Authorize(Roles = "admin")]
-        public ActionResult<string> ChangePhoto(int id, byte[] newPhoto)
+        public ActionResult<string> ChangePhoto([FromForm] ToyPhotoViewModel toyPhoto)
         {
             try
             {
-                var response = _service.ChangePhoto(id, newPhoto);
+                var response = _service.ChangePhoto(toyPhoto);
                 if(response == null)
                 {
                     return BadRequest();
