@@ -64,6 +64,13 @@ namespace Repository
 
         public ToyDTO AddToy(ToyViewModel toy)
         {
+            var toyExists = _context.toys.SingleOrDefault(t => t.Code == toy.Code);
+
+            if (toyExists != null)
+            {
+                return null;
+            }
+
             ToyDTO newToy = new ToyDTO();
 
             if (toy.ImageFile != null)
@@ -79,7 +86,7 @@ namespace Repository
                         ms.Position = 0;
 
                         // Save the file bytes to the database
-                        _context.toys.Add(new Toy()
+                        Toy newToyDB = new Toy()
                         {
                             Code = toy.Code,
                             Name = toy.Name,
@@ -90,16 +97,22 @@ namespace Repository
                             StockThreshold = toy.StockThreshold,
                             State = true,
                             Price = toy.Price,
-                        });
+                        };
+
+                        _context.toys.Add(newToyDB);
 
                         _context.SaveChanges();
-
+                        // Retrieve the code of the recently created toy
+                        int newToyCode = newToyDB.Code;
                         // Reset the position again if needed
                         ms.Position = 0;
 
-                        newToy.Code = toy.Code;
+                        string category = _category.GetCategoryById(newToyDB.CategoryId);
+
+                        newToy.Code = newToyCode;
                         newToy.Name = toy.Name;
                         newToy.CategoryId = toy.CategoryId;
+                        newToy.CategoryName = category;
                         newToy.Description = toy.Description;
                         newToy.ToyImg = ms.ToArray(); // Convert IFormFile to byte array
                         newToy.State = true;

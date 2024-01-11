@@ -70,7 +70,7 @@ namespace api.Controllers
                 var response = _service.AddToy(toy);
                 if (response == null)
                 {
-                    return BadRequest();
+                    return BadRequest("Toy with that code already exists.");
                 }
 
                 return Ok(response);
