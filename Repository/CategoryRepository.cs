@@ -37,15 +37,24 @@ namespace Repository
         {
             CategoryDTO newCategory = new CategoryDTO();
 
-            _context.categories.Add(new Category()
+            Category newDbCategory = new Category()
             {
                 CategoryName = category.CategoryName,
                 State = true,
-            });
+            };
 
+            _context.categories.Add(newDbCategory);
+
+            // Save changes to the database
             _context.SaveChanges();
 
+            // Retrieve the CategoryCode of the newly created record
+            int newCategoryCode = newDbCategory.CategoryCode;
+
+            // Populate the newCategory DTO with the retrieved values
+            newCategory.CategoryCode = newCategoryCode;
             newCategory.CategoryName = category.CategoryName;
+            newCategory.State = true;
 
             return newCategory;
         }
